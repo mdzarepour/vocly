@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/router/pages.dart';
 import 'package:vocly/app/core/service/dialog_service.dart';
-import 'package:vocly/app/core/state/filtering_state.dart';
-import 'package:vocly/app/core/state/pagination_state.dart';
 import 'package:vocly/app/data/model/word.dart';
-import 'package:vocly/app/core/state/selection_state.dart';
 import 'package:vocly/app/data/repository/repository.dart';
+import 'package:vocly/app/shared/state/filtering_state.dart';
+import 'package:vocly/app/shared/state/pagination_state.dart';
+import 'package:vocly/app/shared/state/selection_state.dart';
 
 class WordManageController extends GetxController {
   final WordRepository _wordRepository;
@@ -104,13 +104,14 @@ class WordManageController extends GetxController {
   void onInit() {
     wordSelection = SelectionState<Word>(
       idOf: (item) => item.id,
-      initialSelectionMode: type == WordManagerScreenType.selectWords,
+      alwaysSelectionMode: type == WordManagerScreenType.selectWords,
     );
     paginator = PaginationState();
     filterState = FilteringState();
     subscription = _wordRepository.watchWords().listen((event) {
       refreshPage();
     });
+    print(wordSelection.isSelectionMode);
     super.onInit();
   }
 

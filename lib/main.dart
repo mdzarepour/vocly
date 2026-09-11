@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/router/vocly_router.dart';
 import 'package:vocly/app/data/model/book.dart';
 import 'package:vocly/app/data/model/word.dart';
@@ -31,10 +30,10 @@ class Vocly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: '/',
       debugShowCheckedModeBanner: false,
       theme: VoclyTheme.theme,
       getPages: VoclyRouter.routes,
+      initialRoute: '/',
     );
   }
 }

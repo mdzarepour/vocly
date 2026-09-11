@@ -2,7 +2,7 @@ import 'package:isar_community/isar.dart';
 import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/error/vocly_error.dart';
 import 'package:vocly/app/data/model/book.dart';
-import 'package:vocly/app/data/model/filter_model.dart';
+import 'package:vocly/app/data/model/filter.dart';
 import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/data/provider/book_provider.dart';
 import 'package:vocly/app/data/provider/word_provider.dart';
@@ -25,7 +25,7 @@ abstract class WordRepository {
   Future<List<Word>> getWordsPage({
     required int offset,
     required int limit,
-    required FilterModel filter,
+    required Filter filter,
     required SortType sort,
   });
 
@@ -104,7 +104,7 @@ class Repository implements WordRepository, BookRepository {
   Future<List<Word>> getWordsPage({
     required int offset,
     required int limit,
-    required FilterModel filter,
+    required Filter filter,
     required SortType sort,
   }) async {
     try {

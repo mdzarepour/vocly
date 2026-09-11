@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/router/pages.dart';
-import 'package:vocly/app/core/state/pagination_state.dart';
+import 'package:vocly/app/shared/state/pagination_state.dart';
 import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/data/repository/repository.dart';
 

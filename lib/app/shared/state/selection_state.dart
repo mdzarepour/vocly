@@ -1,31 +1,19 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get.dart';
 
 class SelectionState<T> {
   final int Function(T item) idOf;
+  final bool alwaysSelectionMode;
 
-  SelectionState({required this.idOf, bool initialSelectionMode = false}) {
-    _isSelectionMode.value = initialSelectionMode;
-  }
+  SelectionState({required this.idOf, this.alwaysSelectionMode = false});
 
   // --- state
   final RxSet<int> _selectedIds = <int>{}.obs;
-  final RxBool _isSelectionMode = false.obs;
 
   Set<int> get selectedIds => _selectedIds;
   int get selectedCount => _selectedIds.length;
-  bool get isSelectionMode => _isSelectionMode.value;
 
-  // --- selection mode
-  void enableSelectionMode() {
-    _isSelectionMode.value = true;
-  }
-
-  void disableSelectionMode() {
-    _isSelectionMode.value = false;
-  }
-
-  void toggleSelectionMode() {
-    _isSelectionMode.toggle();
+  bool get isSelectionMode {
+    return alwaysSelectionMode || _selectedIds.isNotEmpty;
   }
 
   // --- selecting

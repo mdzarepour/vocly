@@ -29,12 +29,20 @@ class WordManagePage extends GetView<WordManageController> {
         },
         child: const _Body(),
       ),
-      bottomNavigationBar: controller.type == WordManagerScreenType.selectWords
-          // Selec words button
-          ? InkWell(
+      bottomNavigationBar: _SelectWordsButton(),
+    );
+  }
+}
+
+class _SelectWordsButton extends GetView<WordManageController> {
+  @override
+  Widget build(BuildContext context) {
+    return controller.type == WordManagerScreenType.selectWords
+        ? SafeArea(
+            child: InkWell(
               onTap: controller.toBackWithSelectedWords,
               child: Container(
-                height: 100,
+                height: 70,
                 decoration: const BoxDecoration(
                   color: UiColor.forthColor,
                   border: Border(
@@ -45,9 +53,9 @@ class WordManagePage extends GetView<WordManageController> {
                   child: Text(style: VoclyTypography.titleMedium, 'Add words'),
                 ),
               ),
-            )
-          : null,
-    );
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }
 
@@ -126,18 +134,11 @@ class _AppBar extends GetView<WordManageController>
             InkWell(
               onTap: words.isEmpty
                   ? null
-                  : () {
-                      controller.wordSelection.toggleAll(items: words);
-                    },
+                  : () => controller.wordSelection.toggleAll(items: words),
               child: SizedBox(
                 height: 40,
                 width: 40,
-                child: Icon(
-                  words.isNotEmpty &&
-                          controller.wordSelection.areAllSelected(items: words)
-                      ? Icons.not_interested_outlined
-                      : Icons.done_all_outlined,
-                ),
+                child: Icon(getSelectAllIcon(words: words)),
               ),
             ),
             // Layout icon
@@ -146,11 +147,7 @@ class _AppBar extends GetView<WordManageController>
               child: SizedBox(
                 height: 40,
                 width: 40,
-                child: Icon(
-                  isGridView
-                      ? Icons.grid_view_outlined
-                      : Icons.view_agenda_outlined,
-                ),
+                child: Icon(getLayoutIcon(isGridView: isGridView)),
               ),
             ),
             const SizedBox(width: 20),
@@ -158,6 +155,17 @@ class _AppBar extends GetView<WordManageController>
         );
       }),
     );
+  }
+
+  IconData getSelectAllIcon({required List<Word> words}) {
+    return words.isNotEmpty &&
+            controller.wordSelection.areAllSelected(items: words)
+        ? Icons.not_interested_outlined
+        : Icons.done_all_outlined;
+  }
+
+  IconData getLayoutIcon({required bool isGridView}) {
+    return isGridView ? Icons.grid_view_outlined : Icons.view_agenda_outlined;
   }
 
   @override
@@ -362,11 +370,11 @@ class _WordGridItem extends GetView<WordManageController> {
         word: word,
         isSmallTile: isGrid,
         borderColor: isSelected ? UiColor.thirdColor : UiColor.backgroundColor2,
-        // start selection
+        // Start selection mode
         onLongPress: () {
           selection.select(item: word);
         },
-        // navigate or toggle selection
+        // Navigate or toggle selection
         onTap: () {
           if (selection.isSelectionMode) {
             selection.toggle(item: word);

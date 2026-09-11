@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vocly/app/core/enum/enums.dart';
-import 'package:vocly/app/data/model/filter_model.dart';
+import 'package:vocly/app/data/model/filter.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/constant/vocly_icon.dart';
 
@@ -15,8 +15,8 @@ class FilteringState {
   final RxList<WordLevel> levels = <WordLevel>[].obs;
 
   // --- setters
-  FilterModel get filter {
-    return FilterModel(colors, icons, types, levels);
+  Filter get filter {
+    return Filter(colors, icons, types, levels);
   }
 
   List<Color> get selectedColors {

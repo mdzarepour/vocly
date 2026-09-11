@@ -1,6 +1,6 @@
 import 'package:isar_community/isar.dart';
 import 'package:vocly/app/core/enum/enums.dart';
-import 'package:vocly/app/data/model/filter_model.dart';
+import 'package:vocly/app/data/model/filter.dart';
 import 'package:vocly/app/data/model/word.dart';
 
 class WordProvider {
@@ -75,7 +75,7 @@ class WordProvider {
   Future<List<Word>> getWordsPage({
     required int offset,
     required int limit,
-    required FilterModel filter,
+    required Filter filter,
     required SortType sort,
   }) async {
     final filtered = isar.words
