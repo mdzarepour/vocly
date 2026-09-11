@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/router/pages.dart';
 import 'package:vocly/app/core/service/dialog_service.dart';
 import 'package:vocly/app/core/service/speech_service.dart';
 import 'package:vocly/app/data/model/word.dart';
-import 'package:vocly/app/data/repository/word_repository.dart';
+import 'package:vocly/app/data/repository/repository.dart';
 
 class WordDetailsController extends GetxController {
   final WordRepository _wordRepository;
@@ -41,7 +41,7 @@ class WordDetailsController extends GetxController {
   void toWordCrudPage() {
     Get.toNamed(
       Pages.wordCrudPage,
-      arguments: {'id': id, 'type': WordScreenType.editBook},
+      arguments: {'id': id, 'type': CrudScreenType.edit},
     );
   }
 

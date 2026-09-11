@@ -1,7 +1,6 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/modules/home/controller/word_manage_controller.dart';
 import 'package:vocly/app/modules/home/view/widget/filter_bottom_sheet.dart';
@@ -30,6 +29,24 @@ class WordManagePage extends GetView<WordManageController> {
         },
         child: const _Body(),
       ),
+      bottomNavigationBar: controller.type == WordManagerScreenType.selectWords
+          // Selec words button
+          ? InkWell(
+              onTap: controller.toBackWithSelectedWords,
+              child: Container(
+                height: 100,
+                decoration: const BoxDecoration(
+                  color: UiColor.forthColor,
+                  border: Border(
+                    top: BorderSide(color: UiColor.backgroundColor2),
+                  ),
+                ),
+                child: const Center(
+                  child: Text(style: VoclyTypography.titleMedium, 'Add words'),
+                ),
+              ),
+            )
+          : null,
     );
   }
 }
@@ -41,24 +58,27 @@ class _Body extends GetView<WordManageController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final loadingState = controller.isLoading;
-      // Initial Loading
-      if (loadingState == WordManagerLoading.init) {
+      final isEmpty = controller.words.isEmpty;
+      // Initial loading
+      if (loadingState == LoadingStatus.init) {
         return const VoclyLoading();
       }
-      final isEmpty = controller.words.isEmpty;
+      if (loadingState == LoadingStatus.working && isEmpty) {
+        return const VoclyLoading();
+      }
       // Body
       return CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
-          // Filter ListView
+          // Filter listView
           const _FilterView(),
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
-          // Empty State Or GridView
+          // Empty state or gridView
           if (isEmpty)
             const SliverFillRemaining(hasScrollBody: false, child: EmptyState())
           else
             const _WordsGrid(),
-          // Footer Loading
+          // Footer loading
           if (!isEmpty && controller.paginator.isLoadingMore)
             const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 25),
@@ -79,9 +99,8 @@ class _AppBar extends GetView<WordManageController>
     return AppBar(
       automaticallyImplyLeading: true,
       title: Obx(() {
-        final selection = controller.wordSelection;
-        final isSelectionMode = selection.isSelectionMode;
-        final selectedCount = selection.selectedCount;
+        final isSelectionMode = controller.wordSelection.isSelectionMode;
+        final selectedCount = controller.wordSelection.selectedCount;
         final isGridView = controller.layout == ScreenLayout.gridView;
         final words = controller.words;
         return Row(
@@ -92,8 +111,9 @@ class _AppBar extends GetView<WordManageController>
               style: VoclyTypography.titleMedium,
             ),
             const Spacer(),
-            // Delete Icon
-            if (isSelectionMode)
+            // Delete icon
+            if (isSelectionMode &&
+                controller.type == WordManagerScreenType.manageWords)
               InkWell(
                 onTap: controller.deleteSelectedWords,
                 child: const SizedBox(
@@ -102,24 +122,25 @@ class _AppBar extends GetView<WordManageController>
                   child: Icon(Icons.delete_outline),
                 ),
               ),
-            // SelectAll Icon
+            // SelectAll icon
             InkWell(
               onTap: words.isEmpty
                   ? null
                   : () {
-                      selection.toggleAll(items: words);
+                      controller.wordSelection.toggleAll(items: words);
                     },
               child: SizedBox(
                 height: 40,
                 width: 40,
                 child: Icon(
-                  words.isNotEmpty && selection.areAllSelected(items: words)
+                  words.isNotEmpty &&
+                          controller.wordSelection.areAllSelected(items: words)
                       ? Icons.not_interested_outlined
                       : Icons.done_all_outlined,
                 ),
               ),
             ),
-            // Layout Icon
+            // Layout icon
             InkWell(
               onTap: controller.toggleLayout,
               child: SizedBox(
@@ -157,7 +178,7 @@ class _FilterView extends GetView<WordManageController> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         scrollDirection: Axis.horizontal,
         children: [
-          // Sort Chip
+          // Sort chip
           Obx(() {
             return FilterButton(
               icon: Icons.sort,
@@ -166,14 +187,7 @@ class _FilterView extends GetView<WordManageController> {
               onTap: showSort,
             );
           }),
-          // Learned Chip
-          FilterButton(
-            icon: Icons.school_outlined,
-            title: 'Learned',
-            isSelectd: false,
-            onTap: () {},
-          ),
-          // Color Chip
+          // Color chip
           Obx(
             () => FilterButton(
               icon: Icons.invert_colors_on_outlined,
@@ -182,7 +196,7 @@ class _FilterView extends GetView<WordManageController> {
               onTap: _showColorFilter,
             ),
           ),
-          // Icon Chip
+          // Icon chip
           Obx(
             () => FilterButton(
               icon: Icons.workspaces_outlined,
@@ -191,7 +205,7 @@ class _FilterView extends GetView<WordManageController> {
               onTap: _showIconFilter,
             ),
           ),
-          // Level Chip
+          // Level chip
           Obx(
             () => FilterButton(
               icon: Icons.back_hand_outlined,
@@ -200,7 +214,7 @@ class _FilterView extends GetView<WordManageController> {
               onTap: _showLevelFilter,
             ),
           ),
-          // Type Chip
+          // Type chip
           Obx(
             () => FilterButton(
               icon: Icons.assistant_photo_outlined,
@@ -216,24 +230,19 @@ class _FilterView extends GetView<WordManageController> {
 
   void showSort() {
     Get.bottomSheet(
-      SortBottomSheet(
-        isSelected: (v) {
-          return controller.filterState.sort == v;
-        },
-        onTap: (v) {
-          controller.filterState.changeSort(sortType: v);
-        },
-        onApply: () {
-          controller.refreshPage();
-        },
-      ),
       backgroundColor: UiColor.backgroundColor,
+      SortBottomSheet(
+        isSelected: (v) => controller.filterState.sort == v,
+        onTap: (v) => controller.filterState.changeSort(sortType: v),
+        onApply: () => controller.refreshPage(),
+      ),
     );
   }
 
   void _showColorFilter() {
     final draft = controller.filterState.copy();
     Get.bottomSheet(
+      backgroundColor: UiColor.backgroundColor,
       FilterBottomSheet<Color>(
         options: VoclyColor.children,
         isSelected: (color) {
@@ -250,7 +259,6 @@ class _FilterView extends GetView<WordManageController> {
         },
         itemBuilder: (color) => CircleAvatar(radius: 8, backgroundColor: color),
       ),
-      backgroundColor: UiColor.backgroundColor,
     );
   }
 
@@ -280,40 +288,32 @@ class _FilterView extends GetView<WordManageController> {
   void _showLevelFilter() {
     final draft = controller.filterState.copy();
     Get.bottomSheet(
+      backgroundColor: UiColor.backgroundColor,
       FilterBottomSheet<WordLevel>(
         options: WordLevel.values,
-        isSelected: (v) {
-          return draft.levels.contains(v);
-        },
-        onTap: (v) {
-          draft.toggleLevel(value: v);
-        },
+        isSelected: (v) => draft.levels.contains(v),
+        onTap: (v) => draft.toggleLevel(value: v),
         onApply: () {
           controller.filterState.apply(draft);
           controller.refreshPage();
         },
       ),
-      backgroundColor: UiColor.backgroundColor,
     );
   }
 
   void _showTypeFilter() {
     final draft = controller.filterState.copy();
     Get.bottomSheet(
+      backgroundColor: UiColor.backgroundColor,
       FilterBottomSheet<WordType>(
         options: WordType.values,
-        isSelected: (v) {
-          return draft.types.contains(v);
-        },
-        onTap: (v) {
-          draft.toggleType(value: v);
-        },
+        isSelected: (v) => draft.types.contains(v),
+        onTap: (v) => draft.toggleType(value: v),
         onApply: () {
           controller.filterState.apply(draft);
           controller.refreshPage();
         },
       ),
-      backgroundColor: UiColor.backgroundColor,
     );
   }
 }
@@ -328,7 +328,7 @@ class _WordsGrid extends GetView<WordManageController> {
       final isGrid = controller.layout == ScreenLayout.gridView;
       return SliverPadding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-        // Words GridView
+        // Words gridView
         sliver: SliverGrid.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isGrid ? 2 : 1,
@@ -338,7 +338,7 @@ class _WordsGrid extends GetView<WordManageController> {
           ),
           itemCount: words.length,
           itemBuilder: (context, index) {
-            // Word Item
+            // Word item
             return _WordGridItem(word: words[index], isGrid: isGrid);
           },
         ),
@@ -357,28 +357,23 @@ class _WordGridItem extends GetView<WordManageController> {
     return Obx(() {
       final selection = controller.wordSelection;
       final isSelected = selection.isSelected(word);
-      return FadeInLeft(
-        from: 15,
-        child: WordTile(
-          key: ValueKey(word.id),
-          word: word,
-          isSmallTile: isGrid,
-          borderColor: isSelected
-              ? UiColor.thirdColor
-              : UiColor.backgroundColor2,
-          // start selection
-          onLongPress: () {
-            selection.select(item: word);
-          },
-          // navigate or toggle selection
-          onTap: () {
-            if (selection.isSelectionMode) {
-              selection.toggle(item: word);
-            } else {
-              controller.toWordDetailsPage(id: word.id);
-            }
-          },
-        ),
+      return WordTile(
+        key: ValueKey(word.id),
+        word: word,
+        isSmallTile: isGrid,
+        borderColor: isSelected ? UiColor.thirdColor : UiColor.backgroundColor2,
+        // start selection
+        onLongPress: () {
+          selection.select(item: word);
+        },
+        // navigate or toggle selection
+        onTap: () {
+          if (selection.isSelectionMode) {
+            selection.toggle(item: word);
+          } else {
+            controller.toWordDetailsPage(id: word.id);
+          }
+        },
       );
     });
   }

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class PaginationState {
   final int pageSize;
 
-  PaginationState({this.pageSize = 50});
+  PaginationState({this.pageSize = 150});
   // --- state
   final RxBool _isLoadingMore = false.obs;
   bool get isLoadingMore => _isLoadingMore.value;
@@ -40,7 +40,7 @@ class PaginationState {
     }
   }
 
-  // --- function trugger on max scroll
+  // --- function trigger on max scroll
   bool onScroll(ScrollNotification notification) {
     if (notification is! ScrollUpdateNotification) {
       return false;

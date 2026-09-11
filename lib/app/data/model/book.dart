@@ -1,5 +1,5 @@
 import 'package:isar_community/isar.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/data/model/word.dart';
 
 part 'book.g.dart';
@@ -58,7 +58,7 @@ class Book {
     );
   }
 
-  void updateWord({
+  void updateBook({
     String? newName,
     String? newDescription,
     int? newColor,

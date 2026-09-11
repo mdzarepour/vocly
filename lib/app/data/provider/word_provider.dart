@@ -1,5 +1,5 @@
 import 'package:isar_community/isar.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/data/model/filter_model.dart';
 import 'package:vocly/app/data/model/word.dart';
 
@@ -8,6 +8,7 @@ class WordProvider {
 
   WordProvider({required this.isar});
 
+  // --- crud operations
   Future<void> addWord({required Word word}) async {
     await isar.writeTxn(() async {
       await isar.words.put(word);
@@ -29,6 +30,18 @@ class WordProvider {
     return isar.words.get(id);
   }
 
+  Future<void> deleteWords({required List<int> ids}) async {
+    isar.writeTxn(() async {
+      await isar.words.deleteAll(ids);
+    });
+  }
+
+  Future<List<Word>> getWordsById({required List<int> ids}) async {
+    final result = await isar.words.getAll(ids);
+    return result.whereType<Word>().toList();
+  }
+
+  // --- listeners
   Stream<Word?> watchWord({required int id}) {
     return isar.words.watchObject(id);
   }
@@ -37,10 +50,32 @@ class WordProvider {
     return isar.words.watchLazy(fireImmediately: true);
   }
 
+  // --- get paged values
+  Future<List<Word>> searchWords({
+    required String query,
+    required int offset,
+    required int limit,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 350));
+    if (query.isEmpty) {
+      return await isar.words.where().offset(offset).limit(limit).findAll();
+    }
+    return await isar.words
+        .where()
+        .nameStartsWith(query)
+        .or()
+        .meaningWordsElementStartsWith(query)
+        .or()
+        .exampleWordsElementStartsWith(query)
+        .offset(offset)
+        .limit(limit)
+        .findAll();
+  }
+
   Future<List<Word>> getWordsPage({
     required int offset,
     required int limit,
-    required WordFilter filter,
+    required FilterModel filter,
     required SortType sort,
   }) async {
     final filtered = isar.words
@@ -69,7 +104,6 @@ class WordProvider {
             (query, level) => query.levelEqualTo(level),
           );
         });
-
     if (sort == SortType.none) {
       return await filtered.offset(offset).limit(limit).findAll();
     }
@@ -91,34 +125,6 @@ class WordProvider {
       case SortType.none:
         throw StateError('unreachable');
     }
-
     return await sorted.offset(offset).limit(limit).findAll();
-  }
-
-  Future<List<Word>> searchWords({
-    required String query,
-    required int offset,
-    required int limit,
-  }) async {
-    await Future.delayed(const Duration(milliseconds: 350));
-    if (query.isEmpty) {
-      return await isar.words.where().offset(offset).limit(limit).findAll();
-    }
-    return await isar.words
-        .where()
-        .nameStartsWith(query)
-        .or()
-        .meaningWordsElementStartsWith(query)
-        .or()
-        .exampleWordsElementStartsWith(query)
-        .offset(offset)
-        .limit(limit)
-        .findAll();
-  }
-
-  Future<void> deleteWords({required List<int> ids}) async {
-    isar.writeTxn(() async {
-      await isar.words.deleteAll(ids);
-    });
   }
 }

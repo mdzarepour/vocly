@@ -1,39 +1,32 @@
 import 'dart:async';
 import 'package:get/get.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/router/pages.dart';
 import 'package:vocly/app/core/service/dialog_service.dart';
 import 'package:vocly/app/core/state/filtering_state.dart';
 import 'package:vocly/app/core/state/pagination_state.dart';
 import 'package:vocly/app/data/model/word.dart';
-import 'package:vocly/app/data/repository/word_repository.dart';
 import 'package:vocly/app/core/state/selection_state.dart';
-
-// TODO merge with other loading enums
-enum WordManagerLoading { none, init, fetch }
+import 'package:vocly/app/data/repository/repository.dart';
 
 class WordManageController extends GetxController {
   final WordRepository _wordRepository;
   final DialogService _dialogService;
+  final WordManagerScreenType type;
 
-  WordManageController(this._wordRepository, this._dialogService);
+  WordManageController(this.type, this._wordRepository, this._dialogService);
 
   late final StreamSubscription subscription;
   late final PaginationState paginator;
   late final FilteringState filterState;
-
-  final wordSelection = SelectionState<Word>(
-    idOf: (item) {
-      return item.id;
-    },
-  );
+  late final SelectionState wordSelection;
 
   // --- state
   final RxList<Word> _words = <Word>[].obs;
   List<Word> get words => _words;
 
-  final Rx<WordManagerLoading> _loading = Rx(WordManagerLoading.init);
-  WordManagerLoading get isLoading => _loading.value;
+  final Rx<LoadingStatus> _loading = Rx(LoadingStatus.init);
+  LoadingStatus get isLoading => _loading.value;
 
   final Rx<ScreenLayout> _layout = ScreenLayout.listView.obs;
   ScreenLayout get layout => _layout.value;
@@ -46,16 +39,16 @@ class WordManageController extends GetxController {
 
   // --- fetch
   Future<void> fetchWords() async {
-    if (_loading.value == WordManagerLoading.fetch) {
+    if (_loading.value == LoadingStatus.working) {
       return;
     }
-    if (_loading.value != WordManagerLoading.init) {
-      _loading.value = WordManagerLoading.fetch;
+    if (_loading.value != LoadingStatus.init) {
+      _loading.value = LoadingStatus.working;
     }
     try {
       await paginator.fetchNextPage<Word>(
         fetcher: (limit, offset) async {
-          await Future.delayed(const Duration(seconds: 1));
+          await Future.delayed(const Duration(milliseconds: 350));
           return _wordRepository.getWordsPage(
             filter: filterState.filter,
             sort: filterState.sort,
@@ -69,7 +62,7 @@ class WordManageController extends GetxController {
         listLength: words.length,
       );
     } finally {
-      _loading.value = WordManagerLoading.none;
+      _loading.value = LoadingStatus.none;
     }
   }
 
@@ -102,9 +95,17 @@ class WordManageController extends GetxController {
     Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
   }
 
+  void toBackWithSelectedWords() {
+    Get.back(result: wordSelection.selectedIds);
+  }
+
   // --- life cycle
   @override
   void onInit() {
+    wordSelection = SelectionState<Word>(
+      idOf: (item) => item.id,
+      initialSelectionMode: type == WordManagerScreenType.selectWords,
+    );
     paginator = PaginationState();
     filterState = FilteringState();
     subscription = _wordRepository.watchWords().listen((event) {

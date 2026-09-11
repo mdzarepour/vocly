@@ -1,10 +1,10 @@
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 
-class WordFilter {
+class FilterModel {
   List<int> colors;
   List<int> icons;
   List<WordType> types;
   List<WordLevel> levels;
 
-  WordFilter(this.colors, this.icons, this.types, this.levels);
+  FilterModel(this.colors, this.icons, this.types, this.levels);
 }

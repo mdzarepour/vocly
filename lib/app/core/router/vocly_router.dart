@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:vocly/app/core/binding/initial_binding.dart';
 import 'package:vocly/app/modules/home/binding/home_binding.dart';
+import 'package:vocly/app/modules/home/view/book_crud_page.dart';
 import 'package:vocly/app/modules/home/view/home_page.dart';
 import 'package:vocly/app/modules/home/view/search_page.dart';
 import 'package:vocly/app/modules/home/view/word_crud_page.dart';
@@ -13,12 +14,14 @@ class VoclyRouter {
   VoclyRouter._();
 
   static final routes = [
+    // --- shell page
     GetPage(
       showCupertinoParallax: false,
       name: Pages.initialPage,
       page: () => const VoclyShell(),
       binding: InitialBinding(),
     ),
+    // --- home feature
     GetPage(
       showCupertinoParallax: false,
       name: Pages.homePage,
@@ -47,6 +50,12 @@ class VoclyRouter {
       name: Pages.wordDetailsPage,
       page: () => const WordDetailsScreen(),
       binding: WordDetailsBinding(),
+    ),
+    GetPage(
+      showCupertinoParallax: false,
+      name: Pages.bookCrudPage,
+      page: () => const BookCrudPage(),
+      binding: BookCrudBinding(),
     ),
   ];
 }

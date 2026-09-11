@@ -3,15 +3,30 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 class SelectionState<T> {
   final int Function(T item) idOf;
 
-  SelectionState({required this.idOf});
+  SelectionState({required this.idOf, bool initialSelectionMode = false}) {
+    _isSelectionMode.value = initialSelectionMode;
+  }
 
   // --- state
   final RxSet<int> _selectedIds = <int>{}.obs;
+  final RxBool _isSelectionMode = false.obs;
+
   Set<int> get selectedIds => _selectedIds;
-
   int get selectedCount => _selectedIds.length;
+  bool get isSelectionMode => _isSelectionMode.value;
 
-  bool get isSelectionMode => _selectedIds.isNotEmpty;
+  // --- selection mode
+  void enableSelectionMode() {
+    _isSelectionMode.value = true;
+  }
+
+  void disableSelectionMode() {
+    _isSelectionMode.value = false;
+  }
+
+  void toggleSelectionMode() {
+    _isSelectionMode.toggle();
+  }
 
   // --- selecting
   bool isSelected(T item) {
@@ -51,9 +66,11 @@ class SelectionState<T> {
 
   void toggleAll({required Iterable<T> items}) {
     final list = items.toList();
+
     if (list.isEmpty) {
       return;
     }
+
     if (areAllSelected(items: list)) {
       deselectAll(list);
     } else {
@@ -63,12 +80,15 @@ class SelectionState<T> {
 
   bool areAllSelected({required Iterable<T> items}) {
     final list = items.toList();
+
     if (list.isEmpty) {
       return false;
     }
+
     return list.every(isSelected);
   }
 
+  // --- clear
   void clear() {
     _selectedIds.clear();
   }

@@ -33,7 +33,7 @@ class HomePage extends GetView<HomeController> {
                 title: 'Words',
                 data: '5 words',
                 icon: Icons.language_outlined,
-                onTap: () => controller.toWordManagePage(),
+                onTap: controller.toWordManagePage,
               ),
             ),
           ],
@@ -46,14 +46,14 @@ class HomePage extends GetView<HomeController> {
               child: _HomeButton(
                 title: 'Add book',
                 icon: Icons.add,
-                onTap: () {},
+                onTap: controller.toBookCrudPage,
               ),
             ),
             Expanded(
               child: _HomeButton(
                 title: 'Add word',
                 icon: Icons.add,
-                onTap: () => controller.toWordCrudPage(),
+                onTap: controller.toWordCrudPage,
               ),
             ),
           ],
@@ -89,7 +89,7 @@ class HomePage extends GetView<HomeController> {
 
   Widget _searchWidget() {
     return InkWell(
-      onTap: () => controller.toSearchPage(),
+      onTap: controller.toSearchPage,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(

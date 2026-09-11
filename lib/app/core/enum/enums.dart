@@ -1,5 +1,4 @@
-//================== Model Related =============================================
-
+// --- model related
 enum WordLevel { easy, medium, hard }
 
 enum WordType {
@@ -26,12 +25,13 @@ enum BookType {
   general,
 }
 
-//================== Logic Related =============================================
+// --- logic related
+enum CrudScreenType { add, edit }
 
-enum WordScreenType { addBook, editBook }
+enum WordManagerScreenType { manageWords, selectWords }
 
 enum ScreenLayout { gridView, listView }
 
-enum SearchLoading { search, init, none }
+enum LoadingStatus { working, init, none }
 
 enum SortType { sortAtoZ, sortZtoA, sortNewest, sortOldest, none }

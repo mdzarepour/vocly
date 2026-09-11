@@ -6,6 +6,7 @@ import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
 import 'package:vocly/app/shared/widget/vocly_card.dart';
 
+// TODO serach about seperating widget from service
 class DialogService extends GetxService {
   Future<bool> showDialog({
     required String title,
@@ -48,6 +49,7 @@ class _DialogWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            // Cancel Button
             Expanded(
               child: InkWell(
                 onTap: () => Get.back(result: false),
@@ -60,6 +62,7 @@ class _DialogWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
+            // Confirm Button
             Expanded(
               child: InkWell(
                 onTap: () => Get.back(result: true),

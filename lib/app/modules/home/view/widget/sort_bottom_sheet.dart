@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
 import 'package:vocly/app/shared/widget/vocly_card.dart';

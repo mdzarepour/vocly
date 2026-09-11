@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:substring_highlight/substring_highlight.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/modules/home/controller/search_controller.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
@@ -38,13 +38,13 @@ class _SearchAppBar extends GetView<WordSearchController>
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      // bottom border
+      // Bottom border
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(0.8),
         child: Container(height: 0.8, color: UiColor.firsColor),
       ),
       actionsPadding: const EdgeInsets.only(right: 30),
-      // --- serach textField
+      // Serach textField
       title: TextField(
         cursorColor: UiColor.thirdColor,
         style: VoclyTypography.titleMedium,
@@ -54,10 +54,10 @@ class _SearchAppBar extends GetView<WordSearchController>
         ),
         onChanged: (value) => controller.updateQuery(q: value),
       ),
-      // --- search loading
+      // Search loading
       actions: [
         Obx(() {
-          if (controller.loading == SearchLoading.search) {
+          if (controller.loading == LoadingStatus.working) {
             return const SizedBox(
               height: 20,
               width: 20,
@@ -80,11 +80,11 @@ class _SearchBody extends GetView<WordSearchController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      // --- initial loading
-      if (controller.loading == SearchLoading.init) {
+      // Initial loading
+      if (controller.loading == LoadingStatus.init) {
         return const VoclyLoading();
       }
-      // --- empty state
+      // Empty state
       if (controller.words.isEmpty) {
         return const EmptyState();
       }
@@ -107,10 +107,10 @@ class _WordsList extends GetView<WordSearchController> {
           const SliverToBoxAdapter(child: SizedBox(height: 25)),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            // --- listView
+            // ListView
             sliver: SliverList.builder(
               itemCount: words.length,
-              // --- word item
+              // Word item
               itemBuilder: (context, index) {
                 final word = words[index];
                 return Padding(
@@ -119,7 +119,7 @@ class _WordsList extends GetView<WordSearchController> {
                     key: ValueKey(word.id),
                     word: word,
                     query: query,
-                    // --- navigate to details screen
+                    // Navigate to details screen
                     onTap: () {
                       controller.toWordDetailsPage(id: word.id);
                     },
@@ -128,7 +128,7 @@ class _WordsList extends GetView<WordSearchController> {
               },
             ),
           ),
-          // --- footer loading
+          // Footer loading
           if (isLoadingMore)
             const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 25),
@@ -159,7 +159,6 @@ class _SearchTile extends StatelessWidget {
       onTap: onTap,
       child: VoclyCard(
         height: 70,
-
         child: Row(
           children: [
             Expanded(
@@ -168,7 +167,7 @@ class _SearchTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // --- name
+                  // Name
                   SubstringHighlight(
                     text: word.name,
                     term: query,
@@ -178,7 +177,7 @@ class _SearchTile extends StatelessWidget {
                       color: UiColor.blueHighLightColor,
                     ),
                   ),
-                  // --- example
+                  // Example
                   SubstringHighlight(
                     text: word.example,
                     term: query,
@@ -191,7 +190,7 @@ class _SearchTile extends StatelessWidget {
                 ],
               ),
             ),
-            // --- icon
+            // Icon
             Icon(VoclyIcon.children[word.icon]),
           ],
         ),

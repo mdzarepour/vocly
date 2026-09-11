@@ -2,60 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:vocly/app/core/error/vocly_error.dart';
+import 'package:vocly/app/core/router/pages.dart';
 import 'package:vocly/app/core/service/dialog_service.dart';
 import 'package:vocly/app/core/enum/enums.dart';
-import 'package:vocly/app/data/model/word.dart';
+import 'package:vocly/app/data/model/book.dart';
 import 'package:vocly/app/data/repository/repository.dart';
 
-class WordCrudController extends GetxController {
-  final WordRepository _wordRepository;
+class BookCrudController extends GetxController {
+  final BookRepository _bookRepository;
   final DialogService _dialogService;
   final CrudScreenType screenType;
   final int? _id;
 
-  WordCrudController(
+  BookCrudController(
     this._id,
     this.screenType,
-    this._wordRepository,
+    this._bookRepository,
     this._dialogService,
   );
 
   // --- form
   late final TextEditingController nameController;
-  late final TextEditingController meaningController;
-  late final TextEditingController exampleController;
+  late final TextEditingController descriptionController;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  Word? _editingWord;
+  Book? _editingBook;
 
   // --- state
-  Rx<WordType> type = Rx(WordType.noun);
-  Rx<WordLevel> level = Rx(WordLevel.easy);
+  final RxList<int> _wordsIds = <int>[].obs;
+  Rx<BookType> type = Rx(BookType.academic);
+  Rx<BookLevel> level = Rx(BookLevel.easy);
   RxInt icon = 0.obs;
   RxInt color = 0.obs;
 
   // --- init controller
   void _initController() async {
     if (screenType == CrudScreenType.add) return;
-    _editingWord = await _wordRepository.getWord(id: _id!);
+    _editingBook = await _bookRepository.getBook(id: _id!);
 
-    if (_editingWord != null) {
-      nameController.text = _editingWord!.name;
-      meaningController.text = _editingWord!.meaning;
-      exampleController.text = _editingWord!.example;
+    if (_editingBook != null) {
+      nameController.text = _editingBook!.name;
+      descriptionController.text = _editingBook!.description;
 
-      type.value = _editingWord!.type;
-      level.value = _editingWord!.level;
-      icon.value = _editingWord!.icon;
-      color.value = _editingWord!.color;
+      type.value = _editingBook!.type;
+      level.value = _editingBook!.level;
+      icon.value = _editingBook!.icon;
+      color.value = _editingBook!.color;
     }
   }
 
   // --- add word
   Future<Either<String, String>> addWord() async {
     try {
-      final newWord = Word.create(map: _ctreateMap());
-      final isExist = await _wordRepository.isWordExist(name: newWord.name);
+      final newWord = Book.create(map: _ctreateMap());
+      final isExist = await _bookRepository.isBookExist(name: newWord.name);
       if (isExist) {
         final permission = await _dialogService.showDialog(
           title: 'You are already have this word!',
@@ -66,7 +66,7 @@ class WordCrudController extends GetxController {
           return left('Permission denied');
         }
       }
-      await _wordRepository.addWord(word: newWord);
+      await _bookRepository.addBook(book: newWord, ids: _wordsIds);
       return right('${newWord.name.capitalizeFirst} added');
     } on AppError catch (e) {
       return left(e.errorMessage);
@@ -77,17 +77,15 @@ class WordCrudController extends GetxController {
   Future<Either<String, String>> updateWord() async {
     try {
       final map = _ctreateMap();
-      _editingWord!.updateWord(
+      _editingBook!.updateBook(
         newColor: map['color'],
-        newExample: map['example'],
         newIcon: map['icon'],
         newLevel: map['level'],
-        newMeaning: map['meaning'],
         newName: map['name'],
         newType: map['type'],
       );
-      await _wordRepository.updateWord(word: _editingWord!);
-      return right('${_editingWord!.name} updated');
+      await _bookRepository.updateBook(book: _editingBook!);
+      return right('${_editingBook!.name} updated');
     } on AppError catch (e) {
       return left(e.errorMessage);
     }
@@ -97,8 +95,7 @@ class WordCrudController extends GetxController {
   Map<String, dynamic> _ctreateMap() {
     return {
       'name': nameController.text,
-      'meaning': meaningController.text,
-      'example': exampleController.text,
+      'description': descriptionController.text,
       'type': type.value,
       'level': level.value,
       'icon': icon.value,
@@ -112,21 +109,26 @@ class WordCrudController extends GetxController {
     Get.back();
   }
 
+  void toManageWordsPage() async {
+    _wordsIds.value = await Get.toNamed(
+      Pages.wordManagePage,
+      arguments: {'type': WordManagerScreenType.selectWords},
+    );
+  }
+
   // --- life cycle
   @override
   void onInit() {
     super.onInit();
     _initController();
     nameController = TextEditingController();
-    meaningController = TextEditingController();
-    exampleController = TextEditingController();
+    descriptionController = TextEditingController();
   }
 
   @override
   void onClose() {
     super.onClose();
     nameController.dispose();
-    meaningController.dispose();
-    exampleController.dispose();
+    descriptionController.dispose();
   }
 }

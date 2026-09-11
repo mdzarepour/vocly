@@ -1,19 +1,23 @@
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/router/pages.dart';
 
 class HomeController extends GetxController {
-  // --- navigation 
+  // --- navigation
   void toWordManagePage() {
-    Get.toNamed(Pages.wordManagePage);
+    Get.toNamed(
+      Pages.wordManagePage,
+      arguments: {'type': WordManagerScreenType.manageWords},
+    );
   }
 
   void toWordCrudPage() {
-    Get.toNamed(
-      Pages.wordCrudPage,
-      arguments: {'type': WordScreenType.addBook},
-    );
+    Get.toNamed(Pages.wordCrudPage, arguments: {'type': CrudScreenType.add});
+  }
+
+  void toBookCrudPage() {
+    Get.toNamed(Pages.bookCrudPage, arguments: {'type': CrudScreenType.add});
   }
 
   void toSearchPage() {

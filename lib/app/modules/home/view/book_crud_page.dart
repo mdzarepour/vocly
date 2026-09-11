@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:vocly/app/core/enum/enums.dart';
-import 'package:vocly/app/modules/home/controller/word_crud_controller.dart';
+import 'package:vocly/app/modules/home/controller/book_crud_controller.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/constant/vocly_icon.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
@@ -11,8 +10,8 @@ import 'package:vocly/app/shared/widget/vocly_card.dart';
 import 'package:vocly/app/shared/widget/vocly_input.dart';
 import 'package:vocly/app/shared/widget/vocly_snackbar.dart';
 
-class WordCrudPage extends GetView<WordCrudController> {
-  const WordCrudPage({super.key});
+class BookCrudPage extends GetView<BookCrudController> {
+  const BookCrudPage({super.key});
 
   bool get _isEditing => controller.screenType != CrudScreenType.add;
 
@@ -25,7 +24,7 @@ class WordCrudPage extends GetView<WordCrudController> {
         appBar: AppBar(
           centerTitle: false,
           title: Text(
-            _isEditing ? 'Edit word' : 'Add new word',
+            _isEditing ? 'Edit book' : 'Add new book',
             style: VoclyTypography.titleMedium,
           ),
         ),
@@ -40,7 +39,7 @@ class WordCrudPage extends GetView<WordCrudController> {
                 // Title
                 const SliverToBoxAdapter(
                   child: Text(
-                    'Word details',
+                    'Book details',
                     style: VoclyTypography.titleMedium,
                   ),
                 ),
@@ -54,30 +53,33 @@ class WordCrudPage extends GetView<WordCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Meaning input
+                // Description input
                 SliverToBoxAdapter(
                   child: VoclyInput(
-                    controller: controller.meaningController,
+                    controller: controller.descriptionController,
                     icon: Icons.lightbulb_outline,
-                    hint: 'Meaning',
+                    hint: 'Description',
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Example input
-                SliverToBoxAdapter(
-                  child: VoclyInput(
-                    controller: controller.exampleController,
-                    icon: Icons.segment_outlined,
-                    hint: 'Example',
-                  ),
-                ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
                 // Type
                 _typeSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
                 // Level
                 _levelSelector(),
-                const SliverToBoxAdapter(child: SizedBox(height: 50)),
+                const SliverToBoxAdapter(child: SizedBox(height: 25)),
+                // Title
+                const SliverToBoxAdapter(
+                  child: Text(
+                    'Word visual',
+                    style: VoclyTypography.titleMedium,
+                  ),
+                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 15)),
+                // Book words
+                _selectWords(),
+                const SliverToBoxAdapter(child: SizedBox(height: 25)),
                 // Title
                 const SliverToBoxAdapter(
                   child: Text(
@@ -103,12 +105,24 @@ class WordCrudPage extends GetView<WordCrudController> {
     );
   }
 
+  SliverToBoxAdapter _selectWords() {
+    return SliverToBoxAdapter(
+      child: InkWell(
+        onTap: controller.toManageWordsPage,
+        child: const VoclyCard(
+          height: 50,
+          child: Text(style: VoclyTypography.titleMedium, 'Words'),
+        ),
+      ),
+    );
+  }
+
   Widget _typeSelector() {
     return SliverToBoxAdapter(
       child: Obx(() {
-        return PropertySelector<WordType>(
+        return PropertySelector<BookType>(
           title: 'Type',
-          properties: WordType.values,
+          properties: BookType.values,
           selectedProperty: controller.type.value,
           onSelected: (type) {
             controller.type.value = type;
@@ -127,9 +141,9 @@ class WordCrudPage extends GetView<WordCrudController> {
   Widget _levelSelector() {
     return SliverToBoxAdapter(
       child: Obx(() {
-        return PropertySelector<WordLevel>(
+        return PropertySelector<BookLevel>(
           title: 'Level',
-          properties: WordLevel.values,
+          properties: BookLevel.values,
           selectedProperty: controller.level.value,
           onSelected: (level) {
             controller.level.value = level;
@@ -197,7 +211,7 @@ class WordCrudPage extends GetView<WordCrudController> {
             // Apply button
             child: _ActionButton(
               icon: Icons.done_outlined,
-              title: _isEditing ? 'Update word' : 'Add word',
+              title: _isEditing ? 'Update book' : 'Add book',
               borderColor: UiColor.positiveColor,
               onTap: _submit,
             ),

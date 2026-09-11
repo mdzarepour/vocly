@@ -1,5 +1,5 @@
 import 'package:isar_community/isar.dart';
-import 'package:vocly/app/core/enum/enum/enums.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 
 part 'word.g.dart';
 
