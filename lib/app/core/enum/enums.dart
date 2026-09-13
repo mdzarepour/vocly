@@ -34,4 +34,4 @@ enum ScreenLayout { gridView, listView }
 
 enum LoadingStatus { working, init, none }
 
-enum SortType { sortAtoZ, sortZtoA, sortNewest, sortOldest, none }
+enum SortType { sortAtoZ, sortZtoA, sortNewest, sortOldest }

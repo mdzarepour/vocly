@@ -41,7 +41,7 @@ class SortBottomSheet extends StatelessWidget {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    for (int i = 0; i < SortType.values.length - 1; i++)
+                    for (int i = 0; i < SortType.values.length; i++)
                       _SortItem(
                         key: ValueKey(SortType.values[i]),
                         value: SortType.values[i],

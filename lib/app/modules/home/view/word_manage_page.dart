@@ -187,14 +187,12 @@ class _FilterView extends GetView<WordManageController> {
         scrollDirection: Axis.horizontal,
         children: [
           // Sort chip
-          Obx(() {
-            return FilterButton(
-              icon: Icons.sort,
-              title: 'Sort',
-              isSelectd: controller.filterState.isAnySortSelected,
-              onTap: showSort,
-            );
-          }),
+          FilterButton(
+            icon: Icons.sort,
+            title: 'Sort',
+            isSelectd: true,
+            onTap: showSort,
+          ),
           // Color chip
           Obx(
             () => FilterButton(
@@ -369,7 +367,7 @@ class _WordGridItem extends GetView<WordManageController> {
         key: ValueKey(word.id),
         word: word,
         isSmallTile: isGrid,
-        borderColor: isSelected ? UiColor.thirdColor : UiColor.backgroundColor2,
+        borderColor: getBorderColor(isSelected: isSelected),
         // Start selection mode
         onLongPress: () {
           selection.select(item: word);
@@ -384,5 +382,9 @@ class _WordGridItem extends GetView<WordManageController> {
         },
       );
     });
+  }
+
+  Color getBorderColor({required bool isSelected}) {
+    return isSelected ? UiColor.thirdColor : UiColor.backgroundColor2;
   }
 }

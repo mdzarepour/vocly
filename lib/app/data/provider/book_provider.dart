@@ -15,6 +15,12 @@ class BookProvider {
     });
   }
 
+  Future<void> deleteBooks({required List<int> ids}) async {
+    isar.writeTxn(() async {
+      await isar.books.deleteAll(ids);
+    });
+  }
+
   Future<void> updateBook({required Book book}) async {
     await isar.writeTxn(() async {
       await isar.books.put(book);
@@ -28,5 +34,16 @@ class BookProvider {
 
   Future<Book?> getBook({required int id}) async {
     return isar.books.get(id);
+  }
+
+  Stream<void> watchBooks() {
+    return isar.books.watchLazy(fireImmediately: true);
+  }
+
+  Future<List<Book>> getPagedBooks({
+    required int limit,
+    required int offset,
+  }) async {
+    return await isar.books.where().offset(offset).limit(limit).findAll();
   }
 }

@@ -1,41 +1,29 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:vocly/app/core/enum/enums.dart';
-import 'package:vocly/app/core/router/pages.dart';
 import 'package:vocly/app/core/service/dialog_service.dart';
+import 'package:vocly/app/data/model/book.dart';
 import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/data/repository/repository.dart';
-import 'package:vocly/app/shared/state/filtering_state.dart';
 import 'package:vocly/app/shared/state/pagination_state.dart';
 import 'package:vocly/app/shared/state/selection_state.dart';
 
-class WordManageController extends GetxController {
-  final WordRepository _wordRepository;
+class BookManageController extends GetxController {
+  final BookRepository _bookRepository;
   final DialogService _dialogService;
-  final WordManagerScreenType type;
 
-  WordManageController(this.type, this._wordRepository, this._dialogService);
+  BookManageController(this._bookRepository, this._dialogService);
 
   late final StreamSubscription subscription;
   late final PaginationState paginator;
-  late final FilteringState filterState;
-  late final SelectionState wordSelection;
+  late final SelectionState bookSelection;
 
   // --- state
-  final RxList<Word> _words = <Word>[].obs;
-  List<Word> get words => _words;
+  final RxList<Book> _books = <Book>[].obs;
+  List<Book> get books => _books;
 
   final Rx<LoadingStatus> _loading = Rx(LoadingStatus.init);
   LoadingStatus get isLoading => _loading.value;
-
-  final Rx<ScreenLayout> _layout = ScreenLayout.listView.obs;
-  ScreenLayout get layout => _layout.value;
-
-  void toggleLayout() {
-    _layout.value = _layout.value == ScreenLayout.gridView
-        ? ScreenLayout.listView
-        : ScreenLayout.gridView;
-  }
 
   // --- fetch
   Future<void> fetchWords() async {
@@ -46,20 +34,15 @@ class WordManageController extends GetxController {
       _loading.value = LoadingStatus.working;
     }
     try {
-      await paginator.fetchNextPage<Word>(
+      await paginator.fetchNextPage<Book>(
         fetcher: (limit, offset) async {
           await Future.delayed(const Duration(milliseconds: 350));
-          return _wordRepository.getWordsPage(
-            filter: filterState.filter,
-            sort: filterState.sort,
-            offset: offset,
-            limit: limit,
-          );
+          return _bookRepository.getBooksPage(offset: offset, limit: limit);
         },
         onSuccess: (value) {
-          _words.addAll(value);
+          _books.addAll(value);
         },
-        listLength: words.length,
+        listLength: _books.length,
       );
     } finally {
       _loading.value = LoadingStatus.none;
@@ -70,33 +53,33 @@ class WordManageController extends GetxController {
   Future<void> deleteSelectedWords() async {
     final permission = await _dialogService.showDialog(
       title: 'Deleting',
-      content: 'Are you sure about deleting words',
+      content: 'Are you sure about deleting books',
       confirmTitle: 'Delete',
     );
     if (!permission) {
       return;
     }
-    final ids = wordSelection.selectedIds.toList();
+    final ids = bookSelection.selectedIds.toList();
     if (ids.isEmpty) {
       return;
     }
-    await _wordRepository.deleteWords(ids: ids);
-    wordSelection.clear();
+    await _bookRepository.deleteBooks(ids: ids);
+    bookSelection.clear();
   }
 
   Future<void> refreshPage() async {
-    _words.clear();
+    _books.clear();
     paginator.reset();
     await fetchWords();
   }
 
   // --- navigation
-  void toWordDetailsPage({required int id}) {
-    Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
-  }
+  // void toWordDetailsPage({required int id}) {
+  //   Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
+  // }
 
   void toBackWithSelectedWords() {
-    Get.back(result: wordSelection.selectedIds);
+    Get.back(result: bookSelection.selectedIds);
   }
 
   void toBack() {
@@ -106,16 +89,11 @@ class WordManageController extends GetxController {
   // --- life cycle
   @override
   void onInit() {
-    wordSelection = SelectionState<Word>(
-      idOf: (item) => item.id,
-      alwaysSelectionMode: type == WordManagerScreenType.selectWords,
-    );
+    bookSelection = SelectionState<Book>(idOf: (item) => item.id);
     paginator = PaginationState();
-    filterState = FilteringState();
-    subscription = _wordRepository.watchWords().listen((event) {
+    subscription = _bookRepository.watchBooks().listen((event) {
       refreshPage();
     });
-    print(wordSelection.isSelectionMode);
     super.onInit();
   }
 

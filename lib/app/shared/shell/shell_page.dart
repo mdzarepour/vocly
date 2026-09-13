@@ -6,8 +6,8 @@ import 'package:vocly/app/modules/practice/practice_page.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/shell/shell_controller.dart';
 
-class VoclyShell extends GetView<ShellController> {
-  const VoclyShell({super.key});
+class ShellPage extends GetView<ShellController> {
+  const ShellPage({super.key});
 
   @override
   Widget build(BuildContext context) {

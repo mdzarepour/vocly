@@ -3,6 +3,7 @@ import 'package:vocly/app/core/service/dialog_service.dart';
 import 'package:vocly/app/core/service/speech_service.dart';
 import 'package:vocly/app/data/repository/repository.dart';
 import 'package:vocly/app/modules/home/controller/book_crud_controller.dart';
+import 'package:vocly/app/modules/home/controller/book_manage_controller.dart';
 import 'package:vocly/app/modules/home/controller/search_controller.dart';
 import 'package:vocly/app/modules/home/controller/word_crud_controller.dart';
 import 'package:vocly/app/modules/home/controller/word_details_controller.dart';
@@ -25,6 +26,18 @@ class WordManageBinding extends Bindings {
       return WordManageController(
         type,
         Get.find<WordRepository>(),
+        Get.find<DialogService>(),
+      );
+    });
+  }
+}
+
+class BookManageBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() {
+      return BookManageController(
+        Get.find<BookRepository>(),
         Get.find<DialogService>(),
       );
     });

@@ -83,13 +83,8 @@ class FilteringState {
   //---------------------------------SORT---------------------------------------
 
   // --- state
-  final Rx<SortType> _sortType = Rx(SortType.none);
+  final Rx<SortType> _sortType = Rx(SortType.sortNewest);
   SortType get sort => _sortType.value;
-
-  // --- getters
-  bool get isAnySortSelected {
-    return _sortType.value != SortType.none;
-  }
 
   // --- change sort
   void changeSort({required SortType sortType}) {

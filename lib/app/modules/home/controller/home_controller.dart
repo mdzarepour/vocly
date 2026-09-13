@@ -12,6 +12,10 @@ class HomeController extends GetxController {
     );
   }
 
+  void toBookManagePage() {
+    Get.toNamed(Pages.bookManagePage);
+  }
+
   void toWordCrudPage() {
     Get.toNamed(Pages.wordCrudPage, arguments: {'type': CrudScreenType.add});
   }

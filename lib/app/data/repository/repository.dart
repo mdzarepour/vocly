@@ -12,6 +12,9 @@ abstract class BookRepository {
   Future<void> updateBook({required Book book});
   Future<bool> isBookExist({required String name});
   Future<Book?> getBook({required int id});
+  Stream<void> watchBooks();
+  Future<List<Book>> getBooksPage({required int offset, required int limit});
+  Future<void> deleteBooks({required List<int> ids});
 }
 
 abstract class WordRepository {
@@ -179,6 +182,36 @@ class Repository implements WordRepository, BookRepository {
   Future<Book?> getBook({required int id}) async {
     try {
       return await bookProvider.getBook(id: id);
+    } on IsarError catch (error) {
+      throw AppError(errorMessage: error.message, cause: error);
+    }
+  }
+
+  @override
+  Future<void> deleteBooks({required List<int> ids}) async {
+    try {
+      return await bookProvider.deleteBooks(ids: ids);
+    } on IsarError catch (error) {
+      throw AppError(errorMessage: error.message, cause: error);
+    }
+  }
+
+  @override
+  Future<List<Book>> getBooksPage({
+    required int offset,
+    required int limit,
+  }) async {
+    try {
+      return await bookProvider.getPagedBooks(offset: offset, limit: limit);
+    } on IsarError catch (error) {
+      throw AppError(errorMessage: error.message, cause: error);
+    }
+  }
+
+  @override
+  Stream<void> watchBooks() {
+    try {
+      return bookProvider.watchBooks();
     } on IsarError catch (error) {
       throw AppError(errorMessage: error.message, cause: error);
     }

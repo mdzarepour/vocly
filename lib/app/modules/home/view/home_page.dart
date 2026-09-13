@@ -25,7 +25,7 @@ class HomePage extends GetView<HomeController> {
                 title: 'Books',
                 data: '1 book',
                 icon: Icons.menu_book_outlined,
-                onTap: () {},
+                onTap: controller.toBookManagePage,
               ),
             ),
             Expanded(

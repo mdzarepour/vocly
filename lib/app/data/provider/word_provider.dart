@@ -104,9 +104,6 @@ class WordProvider {
             (query, level) => query.levelEqualTo(level),
           );
         });
-    if (sort == SortType.none) {
-      return await filtered.offset(offset).limit(limit).findAll();
-    }
 
     final QueryBuilder<Word, Word, QAfterSortBy> sorted;
     switch (sort) {
@@ -122,8 +119,6 @@ class WordProvider {
       case SortType.sortOldest:
         sorted = filtered.sortByCreateAt();
         break;
-      case SortType.none:
-        throw StateError('unreachable');
     }
     return await sorted.offset(offset).limit(limit).findAll();
   }

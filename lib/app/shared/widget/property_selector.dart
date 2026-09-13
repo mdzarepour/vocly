@@ -43,7 +43,6 @@ class PropertySelector<T> extends StatelessWidget {
               children: properties
                   .map((property) {
                     final isSelected = property == selectedProperty;
-
                     return InkWell(
                       onTap: () => onSelected(property),
                       child: _buildChild(property, isSelected),

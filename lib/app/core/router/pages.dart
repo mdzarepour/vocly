@@ -6,5 +6,6 @@ class Pages {
   static const String bookCrudPage = '/bookCrudPage';
   static const String searchPage = '/searchPage';
   static const String wordManagePage = '/wordManagePage';
+  static const String bookManagePage = '/bookManagePage';
   static const String wordDetailsPage = '/wordDetailsPage';
 }
