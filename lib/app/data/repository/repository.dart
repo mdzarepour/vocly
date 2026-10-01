@@ -47,7 +47,7 @@ class Repository implements WordRepository, BookRepository {
 
   Repository({required this.wordProvider, required this.bookProvider});
 
-  // --- word methods ----------------------------------------------------------
+  // -------------------------------------------------------------
 
   @override
   Future<void> addWord({required Word word}) async {
@@ -148,7 +148,7 @@ class Repository implements WordRepository, BookRepository {
     }
   }
 
-  // --- book methods ----------------------------------------------------------
+  // -------------------------------------------------------------
 
   @override
   Future<void> addBook({required Book book, required List<int> ids}) async {

@@ -20,7 +20,6 @@ class WordCrudController extends GetxController {
     this._dialogService,
   );
 
-  // --- form
   late final TextEditingController nameController;
   late final TextEditingController meaningController;
   late final TextEditingController exampleController;
@@ -28,13 +27,11 @@ class WordCrudController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Word? _editingWord;
 
-  // --- state
   Rx<WordType> type = Rx(WordType.noun);
   Rx<WordLevel> level = Rx(WordLevel.easy);
   RxInt icon = 0.obs;
   RxInt color = 0.obs;
 
-  // --- init controller
   void _initController() async {
     if (screenType == CrudScreenType.add) return;
     _editingWord = await _wordRepository.getWord(id: _id!);
@@ -51,7 +48,6 @@ class WordCrudController extends GetxController {
     }
   }
 
-  // --- add word
   Future<Either<String, String>> addWord() async {
     try {
       final newWord = Word.create(map: _ctreateMap());
@@ -73,7 +69,6 @@ class WordCrudController extends GetxController {
     }
   }
 
-  // --- update word
   Future<Either<String, String>> updateWord() async {
     try {
       final map = _ctreateMap();
@@ -93,7 +88,6 @@ class WordCrudController extends GetxController {
     }
   }
 
-  // --- helpers
   Map<String, dynamic> _ctreateMap() {
     return {
       'name': nameController.text,
@@ -107,12 +101,10 @@ class WordCrudController extends GetxController {
     };
   }
 
-  // --- navigation
   void goBack() {
     Get.back();
   }
 
-  // --- life cycle
   @override
   void onInit() {
     super.onInit();

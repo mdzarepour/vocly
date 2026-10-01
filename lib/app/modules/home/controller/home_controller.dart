@@ -4,7 +4,6 @@ import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/router/pages.dart';
 
 class HomeController extends GetxController {
-  // --- navigation
   void toWordManagePage() {
     Get.toNamed(
       Pages.wordManagePage,

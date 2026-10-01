@@ -49,7 +49,6 @@ class _DialogWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // Cancel Button
             Expanded(
               child: InkWell(
                 onTap: () => Get.back(result: false),
@@ -62,7 +61,6 @@ class _DialogWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            // Confirm Button
             Expanded(
               child: InkWell(
                 onTap: () => Get.back(result: true),

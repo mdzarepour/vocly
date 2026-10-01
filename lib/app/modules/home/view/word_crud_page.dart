@@ -21,7 +21,6 @@ class WordCrudPage extends GetView<WordCrudController> {
     return GestureDetector(
       onTap: _unfocus,
       child: Scaffold(
-        // Appbar
         appBar: AppBar(
           centerTitle: false,
           title: Text(
@@ -37,7 +36,6 @@ class WordCrudPage extends GetView<WordCrudController> {
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                // Title
                 const SliverToBoxAdapter(
                   child: Text(
                     'Word details',
@@ -45,7 +43,6 @@ class WordCrudPage extends GetView<WordCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                // Name input
                 SliverToBoxAdapter(
                   child: VoclyInput(
                     controller: controller.nameController,
@@ -54,7 +51,6 @@ class WordCrudPage extends GetView<WordCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Meaning input
                 SliverToBoxAdapter(
                   child: VoclyInput(
                     controller: controller.meaningController,
@@ -63,7 +59,6 @@ class WordCrudPage extends GetView<WordCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Example input
                 SliverToBoxAdapter(
                   child: VoclyInput(
                     controller: controller.exampleController,
@@ -72,13 +67,10 @@ class WordCrudPage extends GetView<WordCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Type
                 _typeSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Level
                 _levelSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 50)),
-                // Title
                 const SliverToBoxAdapter(
                   child: Text(
                     'Word visual',
@@ -86,13 +78,10 @@ class WordCrudPage extends GetView<WordCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Icon
                 _iconSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Color
                 _colorSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 25)),
-                // Buuttons
                 _actionButtons(),
                 const SliverToBoxAdapter(child: SizedBox(height: 30)),
               ],
@@ -194,7 +183,6 @@ class WordCrudPage extends GetView<WordCrudController> {
       child: Row(
         children: [
           Expanded(
-            // Apply button
             child: _ActionButton(
               icon: Icons.done_outlined,
               title: _isEditing ? 'Update word' : 'Add word',
@@ -203,7 +191,6 @@ class WordCrudPage extends GetView<WordCrudController> {
             ),
           ),
           const SizedBox(width: 15),
-          // Cancel button
           Expanded(
             child: _ActionButton(
               icon: Icons.cancel_outlined,

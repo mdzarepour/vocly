@@ -33,7 +33,6 @@ class FilterBottomSheet<T> extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            //  Dragger
             Container(
               height: 5,
               width: 80,
@@ -62,21 +61,23 @@ class FilterBottomSheet<T> extends StatelessWidget {
               );
             }),
             const SizedBox(height: 5),
-            // Button
             InkWell(
               onTap: () {
                 onApply();
                 Get.back();
               },
-              child: const VoclyCard(
-                height: 55,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 5,
-                  children: [
-                    Icon(Icons.done_all_outlined),
-                    Text('Apply filters', style: VoclyTypography.titleMedium),
-                  ],
+              child: const SizedBox(
+                width: 250,
+                child: VoclyCard(
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 5,
+                    children: [
+                      Icon(Icons.done_all_outlined),
+                      Text('Apply filters', style: VoclyTypography.titleMedium),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -111,10 +112,8 @@ class _FilterItem<T> extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Dynamic
             if (itemBuilder != null)
               SizedBox(width: 28, child: Center(child: itemBuilder!(value))),
-            // Name
             if (itemBuilder == null)
               Expanded(
                 child: Text(
@@ -122,7 +121,6 @@ class _FilterItem<T> extends StatelessWidget {
                   style: VoclyTypography.bodyMedium,
                 ),
               ),
-            // Checkbox
             SizedBox(
               width: 22,
               child: Checkbox(

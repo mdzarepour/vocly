@@ -8,4 +8,5 @@ class Pages {
   static const String wordManagePage = '/wordManagePage';
   static const String bookManagePage = '/bookManagePage';
   static const String wordDetailsPage = '/wordDetailsPage';
+  static const String bookDetailsPage = '/bookDetailsPage';
 }

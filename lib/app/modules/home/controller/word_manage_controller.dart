@@ -21,7 +21,6 @@ class WordManageController extends GetxController {
   late final FilteringState filterState;
   late final SelectionState wordSelection;
 
-  // --- state
   final RxList<Word> _words = <Word>[].obs;
   List<Word> get words => _words;
 
@@ -37,7 +36,6 @@ class WordManageController extends GetxController {
         : ScreenLayout.gridView;
   }
 
-  // --- fetch
   Future<void> fetchWords() async {
     if (_loading.value == LoadingStatus.working) {
       return;
@@ -48,7 +46,6 @@ class WordManageController extends GetxController {
     try {
       await paginator.fetchNextPage<Word>(
         fetcher: (limit, offset) async {
-          await Future.delayed(const Duration(milliseconds: 350));
           return _wordRepository.getWordsPage(
             filter: filterState.filter,
             sort: filterState.sort,
@@ -66,7 +63,6 @@ class WordManageController extends GetxController {
     }
   }
 
-  // --- delete
   Future<void> deleteSelectedWords() async {
     final permission = await _dialogService.showDialog(
       title: 'Deleting',
@@ -90,7 +86,6 @@ class WordManageController extends GetxController {
     await fetchWords();
   }
 
-  // --- navigation
   void toWordDetailsPage({required int id}) {
     Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
   }
@@ -103,7 +98,6 @@ class WordManageController extends GetxController {
     Get.back();
   }
 
-  // --- life cycle
   @override
   void onInit() {
     wordSelection = SelectionState<Word>(
@@ -115,7 +109,6 @@ class WordManageController extends GetxController {
     subscription = _wordRepository.watchWords().listen((event) {
       refreshPage();
     });
-    print(wordSelection.isSelectionMode);
     super.onInit();
   }
 

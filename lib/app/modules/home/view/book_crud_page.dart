@@ -20,7 +20,6 @@ class BookCrudPage extends GetView<BookCrudController> {
     return GestureDetector(
       onTap: _unfocus,
       child: Scaffold(
-        // Appbar
         appBar: AppBar(
           centerTitle: false,
           title: Text(
@@ -36,7 +35,6 @@ class BookCrudPage extends GetView<BookCrudController> {
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                // Title
                 const SliverToBoxAdapter(
                   child: Text(
                     'Book details',
@@ -44,7 +42,6 @@ class BookCrudPage extends GetView<BookCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                // Name input
                 SliverToBoxAdapter(
                   child: VoclyInput(
                     controller: controller.nameController,
@@ -53,7 +50,6 @@ class BookCrudPage extends GetView<BookCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Description input
                 SliverToBoxAdapter(
                   child: VoclyInput(
                     controller: controller.descriptionController,
@@ -63,13 +59,10 @@ class BookCrudPage extends GetView<BookCrudController> {
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Type
                 _typeSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Level
                 _levelSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 25)),
-                // Title
                 const SliverToBoxAdapter(
                   child: Text(
                     'Word visual',
@@ -77,10 +70,8 @@ class BookCrudPage extends GetView<BookCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Book words
                 _selectWords(),
                 const SliverToBoxAdapter(child: SizedBox(height: 25)),
-                // Title
                 const SliverToBoxAdapter(
                   child: Text(
                     'Word visual',
@@ -88,13 +79,11 @@ class BookCrudPage extends GetView<BookCrudController> {
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Icon
                 _iconSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                // Color
-                _colorSelector(),
+                                _colorSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 25)),
-                // Buuttons
+
                 _actionButtons(),
                 const SliverToBoxAdapter(child: SizedBox(height: 30)),
               ],
@@ -208,7 +197,6 @@ class BookCrudPage extends GetView<BookCrudController> {
       child: Row(
         children: [
           Expanded(
-            // Apply button
             child: _ActionButton(
               icon: Icons.done_outlined,
               title: _isEditing ? 'Update book' : 'Add book',
@@ -217,7 +205,6 @@ class BookCrudPage extends GetView<BookCrudController> {
             ),
           ),
           const SizedBox(width: 15),
-          // Cancel button
           Expanded(
             child: _ActionButton(
               icon: Icons.cancel_outlined,

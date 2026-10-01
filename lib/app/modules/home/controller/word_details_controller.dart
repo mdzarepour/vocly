@@ -2,11 +2,13 @@ import 'dart:async';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:vocly/app/core/enum/enums.dart';
+import 'package:vocly/app/core/error/vocly_error.dart';
 import 'package:vocly/app/core/router/pages.dart';
 import 'package:vocly/app/core/service/dialog_service.dart';
 import 'package:vocly/app/core/service/speech_service.dart';
 import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/data/repository/repository.dart';
+import 'package:vocly/app/shared/state/spelling_state.dart';
 
 class WordDetailsController extends GetxController {
   final WordRepository _wordRepository;
@@ -21,23 +23,37 @@ class WordDetailsController extends GetxController {
     this._wordRepository,
   );
 
-  late final StreamSubscription<Word?>? wordStream;
+  StreamSubscription<Word?>? wordStream;
+  SpellingState? spellingState;
 
-  // --- state
   final Rxn<Word> _word = Rxn<Word>();
   Word? get word => _word.value;
 
-  void listenToWord() {}
+  Future<void> listenToWord() async {
+    if (_word.value == null) return;
+    await _speechService.speak(text: _word.value!.name);
+  }
 
-  Future<Either<String, String>> deleteWord() async {
+  Future<Either<String, String>?> deleteWord() async {
+    final confirmed = await _dialogService.showDialog(
+      title: 'Delete word?',
+      content: 'Are you sure you want to delete "${_word.value!.name}"?',
+      confirmTitle: 'Delete',
+    );
+    if (!confirmed) {
+      return null;
+    }
+
     try {
-      return right('asdas');
-    } catch (e) {
-      return left('dsfjhsdgf');
+      await _wordRepository.deleteWords(ids: [_word.value!.id]);
+      return right('${_word.value!.name} deleted');
+    } on AppError catch (error) {
+      return left(error.errorMessage);
+    } catch (error) {
+      return left(error.toString());
     }
   }
 
-  // --- navigation
   void toWordCrudPage() {
     Get.toNamed(
       Pages.wordCrudPage,
@@ -49,21 +65,33 @@ class WordDetailsController extends GetxController {
     Get.back();
   }
 
-  // --- life cycle
   Future<void> _initWord() async {
-    final Word? word = await _wordRepository.getWord(id: id);
-    _word.value = word;
+    final result = await _wordRepository.getWord(id: id);
+    _refreshWord(result);
   }
 
   void _initStream() {
     wordStream = _wordRepository.watchWord(id: id).listen((event) {
-      _word.value = event;
+      _refreshWord(event);
     });
   }
 
+  void _refreshWord(Word? word) {
+    _word.value = word;
+    if (word == null) {
+      spellingState = null;
+    } else if (spellingState?.word != word.name) {
+      spellingState = SpellingState(word: word.name);
+    }
+  }
+
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
     await _initWord();
     _initStream();
   }

@@ -35,7 +35,6 @@ class BookCrudController extends GetxController {
   RxInt icon = 0.obs;
   RxInt color = 0.obs;
 
-  // --- init controller
   void _initController() async {
     if (screenType == CrudScreenType.add) return;
     _editingBook = await _bookRepository.getBook(id: _id!);
@@ -51,7 +50,6 @@ class BookCrudController extends GetxController {
     }
   }
 
-  // --- add word
   Future<Either<String, String>> addWord() async {
     try {
       final newWord = Book.create(map: _ctreateMap());
@@ -73,7 +71,6 @@ class BookCrudController extends GetxController {
     }
   }
 
-  // --- update word
   Future<Either<String, String>> updateWord() async {
     try {
       final map = _ctreateMap();
@@ -91,7 +88,6 @@ class BookCrudController extends GetxController {
     }
   }
 
-  // --- helpers
   Map<String, dynamic> _ctreateMap() {
     return {
       'name': nameController.text,
@@ -104,7 +100,6 @@ class BookCrudController extends GetxController {
     };
   }
 
-  // --- navigation
   void goBack() {
     Get.back();
   }
@@ -116,7 +111,6 @@ class BookCrudController extends GetxController {
     );
   }
 
-  // --- life cycle
   @override
   void onInit() {
     super.onInit();

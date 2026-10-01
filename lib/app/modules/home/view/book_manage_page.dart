@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/data/model/book.dart';
-import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/modules/home/controller/book_manage_controller.dart';
-import 'package:vocly/app/modules/home/controller/word_manage_controller.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/constant/vocly_icon.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
 import 'package:vocly/app/shared/widget/empty_state.dart';
 import 'package:vocly/app/shared/widget/vocly_card.dart';
 import 'package:vocly/app/shared/widget/vocly_loading.dart';
-import 'package:vocly/app/shared/widget/word_tile.dart';
 
 class BookManagePage extends GetView<BookManageController> {
   const BookManagePage({super.key});
@@ -41,23 +38,19 @@ class _Body extends GetView<BookManageController> {
     return Obx(() {
       final loadingState = controller.isLoading;
       final isEmpty = controller.books.isEmpty;
-      // Initial loading
       if (loadingState == LoadingStatus.init) {
         return const VoclyLoading();
       }
       if (loadingState == LoadingStatus.working && isEmpty) {
         return const VoclyLoading();
       }
-      // Body
       return CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
-          // Empty state or gridView
           if (isEmpty)
             const SliverFillRemaining(hasScrollBody: false, child: EmptyState())
           else
             const _WordsGrid(),
-          // Footer loading
           if (!isEmpty && controller.paginator.isLoadingMore)
             const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 25),
@@ -83,13 +76,11 @@ class _AppBar extends GetView<BookManageController>
         final books = controller.books;
         return Row(
           children: [
-            // Title
             Text(
               isSelectionMode ? '$selectedCount selected' : 'Manage word',
               style: VoclyTypography.titleMedium,
             ),
             const Spacer(),
-            // Delete icon
             if (isSelectionMode)
               InkWell(
                 onTap: controller.deleteSelectedWords,
@@ -99,7 +90,6 @@ class _AppBar extends GetView<BookManageController>
                   child: Icon(Icons.delete_outline),
                 ),
               ),
-            // SelectAll icon
             InkWell(
               onTap: books.isEmpty
                   ? null
@@ -141,7 +131,6 @@ class _WordsGrid extends GetView<BookManageController> {
       final books = controller.books;
       return SliverPadding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-        // Words gridView
         sliver: SliverGrid.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -151,7 +140,6 @@ class _WordsGrid extends GetView<BookManageController> {
           ),
           itemCount: books.length,
           itemBuilder: (context, index) {
-            // Word item
             return _BookGridItem(book: books[index]);
           },
         ),
@@ -177,7 +165,7 @@ class _BookGridItem extends GetView<BookManageController> {
           if (selection.isSelectionMode) {
             selection.toggle(item: book);
           } else {
-            //   controller.toWordDetailsPage(id: word.id);
+            controller.toBookDetailsPage(id: book.id);
           }
         },
         child: Stack(
@@ -190,13 +178,7 @@ class _BookGridItem extends GetView<BookManageController> {
             Positioned(
               left: 20,
               top: 20,
-              child: Row(
-                spacing: 5,
-                children: [
-                  Icon(VoclyIcon.children[book.icon]),
-                  Text(book.type.name, style: VoclyTypography.bodySmall),
-                ],
-              ),
+              child: Icon(VoclyIcon.children[book.icon], size: 18),
             ),
           ],
         ),

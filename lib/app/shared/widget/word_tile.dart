@@ -27,7 +27,6 @@ class WordTile extends StatelessWidget {
       onLongPress: onLongPress,
       onTap: onTap,
       child: isSmallTile
-          // Small word tile
           ? VoclyCard(
               height: 68,
               borderColor: borderColor,
@@ -40,13 +39,11 @@ class WordTile extends StatelessWidget {
                       spacing: 1,
                       children: [
                         const SizedBox(width: double.infinity),
-                        // Word name text
                         Text(
                           word.name,
                           overflow: TextOverflow.ellipsis,
                           style: VoclyTypography.titleMedium,
                         ),
-                        // Word type as text
                         Text(
                           word.type.name,
                           overflow: TextOverflow.ellipsis,
@@ -55,7 +52,6 @@ class WordTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Right hand word color
                   CircleAvatar(
                     radius: 5,
                     backgroundColor: VoclyColor.children[word.color],
@@ -63,14 +59,12 @@ class WordTile extends StatelessWidget {
                 ],
               ),
             )
-          // Big word tile
           : VoclyCard(
               height: 68,
               borderColor: borderColor,
               child: Row(
                 spacing: 15,
                 children: [
-                  // Left hand word icon
                   Icon(VoclyIcon.children[word.icon]),
                   Expanded(
                     flex: 8,
@@ -78,13 +72,11 @@ class WordTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Word name text
                         Text(
                           overflow: TextOverflow.ellipsis,
                           style: VoclyTypography.titleMedium,
                           word.name,
                         ),
-                        // Word meaning text
                         Text(
                           overflow: TextOverflow.ellipsis,
                           style: VoclyTypography.titleSmall,
@@ -93,7 +85,6 @@ class WordTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Right hand word color
                   CircleAvatar(
                     backgroundColor: VoclyColor.children[word.color],
                     radius: 5,

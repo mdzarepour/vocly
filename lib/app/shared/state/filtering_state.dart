@@ -6,15 +6,11 @@ import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/constant/vocly_icon.dart';
 
 class FilteringState {
-  //---------------------------------Filter-------------------------------------
-
-  // --- state
   final RxList<int> colors = <int>[].obs;
   final RxList<int> icons = <int>[].obs;
   final RxList<WordType> types = <WordType>[].obs;
   final RxList<WordLevel> levels = <WordLevel>[].obs;
 
-  // --- setters
   Filter get filter {
     return Filter(colors, icons, types, levels);
   }
@@ -27,7 +23,6 @@ class FilteringState {
     return icons.map((index) => VoclyIcon.children[index]).toList();
   }
 
-  // --- create draft
   FilteringState copy() {
     final draft = FilteringState();
 
@@ -39,7 +34,6 @@ class FilteringState {
     return draft;
   }
 
-  // --- apply draft
   void apply(FilteringState draft) {
     colors.assignAll(draft.colors);
     icons.assignAll(draft.icons);
@@ -47,7 +41,6 @@ class FilteringState {
     levels.assignAll(draft.levels);
   }
 
-  // --- change filter
   void toggleColor({required int value}) {
     if (colors.contains(value)) {
       colors.remove(value);
@@ -80,13 +73,11 @@ class FilteringState {
     }
   }
 
-  //---------------------------------SORT---------------------------------------
+  //------------------------------------------------------------------------
 
-  // --- state
   final Rx<SortType> _sortType = Rx(SortType.sortNewest);
   SortType get sort => _sortType.value;
 
-  // --- change sort
   void changeSort({required SortType sortType}) {
     _sortType.value = sortType;
   }

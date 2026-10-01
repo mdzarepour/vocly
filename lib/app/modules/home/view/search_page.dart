@@ -38,13 +38,11 @@ class _SearchAppBar extends GetView<WordSearchController>
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      // Bottom border
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(0.8),
         child: Container(height: 0.8, color: UiColor.firsColor),
       ),
       actionsPadding: const EdgeInsets.only(right: 30),
-      // Serach textField
       title: TextField(
         cursorColor: UiColor.thirdColor,
         style: VoclyTypography.titleMedium,
@@ -54,7 +52,6 @@ class _SearchAppBar extends GetView<WordSearchController>
         ),
         onChanged: (value) => controller.updateQuery(q: value),
       ),
-      // Search loading
       actions: [
         Obx(() {
           if (controller.loading == LoadingStatus.working) {
@@ -80,11 +77,9 @@ class _SearchBody extends GetView<WordSearchController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      // Initial loading
       if (controller.loading == LoadingStatus.init) {
         return const VoclyLoading();
       }
-      // Empty state
       if (controller.words.isEmpty) {
         return const EmptyState();
       }
@@ -107,10 +102,8 @@ class _WordsList extends GetView<WordSearchController> {
           const SliverToBoxAdapter(child: SizedBox(height: 25)),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            // ListView
             sliver: SliverList.builder(
               itemCount: words.length,
-              // Word item
               itemBuilder: (context, index) {
                 final word = words[index];
                 return Padding(
@@ -119,7 +112,6 @@ class _WordsList extends GetView<WordSearchController> {
                     key: ValueKey(word.id),
                     word: word,
                     query: query,
-                    // Navigate to details screen
                     onTap: () {
                       controller.toWordDetailsPage(id: word.id);
                     },
@@ -128,7 +120,6 @@ class _WordsList extends GetView<WordSearchController> {
               },
             ),
           ),
-          // Footer loading
           if (isLoadingMore)
             const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 25),
@@ -167,7 +158,6 @@ class _SearchTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Name
                   SubstringHighlight(
                     text: word.name,
                     term: query,
@@ -177,7 +167,6 @@ class _SearchTile extends StatelessWidget {
                       color: UiColor.blueHighLightColor,
                     ),
                   ),
-                  // Example
                   SubstringHighlight(
                     text: word.example,
                     term: query,
@@ -190,7 +179,6 @@ class _SearchTile extends StatelessWidget {
                 ],
               ),
             ),
-            // Icon
             Icon(VoclyIcon.children[word.icon]),
           ],
         ),

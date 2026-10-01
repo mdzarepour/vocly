@@ -1,4 +1,3 @@
-// --- model related
 enum WordLevel { easy, medium, hard }
 
 enum WordType {
@@ -25,7 +24,6 @@ enum BookType {
   general,
 }
 
-// --- logic related
 enum CrudScreenType { add, edit }
 
 enum WordManagerScreenType { manageWords, selectWords }

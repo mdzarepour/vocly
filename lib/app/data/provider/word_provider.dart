@@ -8,7 +8,6 @@ class WordProvider {
 
   WordProvider({required this.isar});
 
-  // --- crud operations
   Future<void> addWord({required Word word}) async {
     await isar.writeTxn(() async {
       await isar.words.put(word);
@@ -41,7 +40,6 @@ class WordProvider {
     return result.whereType<Word>().toList();
   }
 
-  // --- listeners
   Stream<Word?> watchWord({required int id}) {
     return isar.words.watchObject(id);
   }
@@ -50,13 +48,11 @@ class WordProvider {
     return isar.words.watchLazy(fireImmediately: true);
   }
 
-  // --- get paged values
   Future<List<Word>> searchWords({
     required String query,
     required int offset,
     required int limit,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 350));
     if (query.isEmpty) {
       return await isar.words.where().offset(offset).limit(limit).findAll();
     }

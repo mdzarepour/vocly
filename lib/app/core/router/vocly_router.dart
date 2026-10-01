@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:vocly/app/core/binding/initial_binding.dart';
 import 'package:vocly/app/modules/home/binding/home_binding.dart';
-import 'package:vocly/app/modules/home/controller/book_manage_controller.dart';
 import 'package:vocly/app/modules/home/view/book_crud_page.dart';
 import 'package:vocly/app/modules/home/view/book_manage_page.dart';
 import 'package:vocly/app/modules/home/view/home_page.dart';
@@ -16,14 +15,13 @@ class VoclyRouter {
   VoclyRouter._();
 
   static final routes = [
-    // --- shell page
     GetPage(
       showCupertinoParallax: false,
       name: Pages.initialPage,
       page: () => const ShellPage(),
       binding: InitialBinding(),
     ),
-    // --- home feature
+
     GetPage(
       showCupertinoParallax: false,
       name: Pages.homePage,

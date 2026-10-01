@@ -67,26 +67,21 @@ class _Body extends GetView<WordManageController> {
     return Obx(() {
       final loadingState = controller.isLoading;
       final isEmpty = controller.words.isEmpty;
-      // Initial loading
       if (loadingState == LoadingStatus.init) {
         return const VoclyLoading();
       }
       if (loadingState == LoadingStatus.working && isEmpty) {
         return const VoclyLoading();
       }
-      // Body
       return CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
-          // Filter listView
           const _FilterView(),
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
-          // Empty state or gridView
           if (isEmpty)
             const SliverFillRemaining(hasScrollBody: false, child: EmptyState())
           else
             const _WordsGrid(),
-          // Footer loading
           if (!isEmpty && controller.paginator.isLoadingMore)
             const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 25),
@@ -113,13 +108,11 @@ class _AppBar extends GetView<WordManageController>
         final words = controller.words;
         return Row(
           children: [
-            // Title
             Text(
               isSelectionMode ? '$selectedCount selected' : 'Manage word',
               style: VoclyTypography.titleMedium,
             ),
             const Spacer(),
-            // Delete icon
             if (isSelectionMode &&
                 controller.type == WordManagerScreenType.manageWords)
               InkWell(
@@ -130,7 +123,6 @@ class _AppBar extends GetView<WordManageController>
                   child: Icon(Icons.delete_outline),
                 ),
               ),
-            // SelectAll icon
             InkWell(
               onTap: words.isEmpty
                   ? null
@@ -141,7 +133,6 @@ class _AppBar extends GetView<WordManageController>
                 child: Icon(getSelectAllIcon(words: words)),
               ),
             ),
-            // Layout icon
             InkWell(
               onTap: controller.toggleLayout,
               child: SizedBox(
@@ -186,14 +177,12 @@ class _FilterView extends GetView<WordManageController> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         scrollDirection: Axis.horizontal,
         children: [
-          // Sort chip
           FilterButton(
             icon: Icons.sort,
             title: 'Sort',
             isSelectd: true,
             onTap: showSort,
           ),
-          // Color chip
           Obx(
             () => FilterButton(
               icon: Icons.invert_colors_on_outlined,
@@ -202,7 +191,6 @@ class _FilterView extends GetView<WordManageController> {
               onTap: _showColorFilter,
             ),
           ),
-          // Icon chip
           Obx(
             () => FilterButton(
               icon: Icons.workspaces_outlined,
@@ -211,7 +199,6 @@ class _FilterView extends GetView<WordManageController> {
               onTap: _showIconFilter,
             ),
           ),
-          // Level chip
           Obx(
             () => FilterButton(
               icon: Icons.back_hand_outlined,
@@ -220,7 +207,6 @@ class _FilterView extends GetView<WordManageController> {
               onTap: _showLevelFilter,
             ),
           ),
-          // Type chip
           Obx(
             () => FilterButton(
               icon: Icons.assistant_photo_outlined,
@@ -334,7 +320,6 @@ class _WordsGrid extends GetView<WordManageController> {
       final isGrid = controller.layout == ScreenLayout.gridView;
       return SliverPadding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-        // Words gridView
         sliver: SliverGrid.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isGrid ? 2 : 1,
@@ -344,7 +329,6 @@ class _WordsGrid extends GetView<WordManageController> {
           ),
           itemCount: words.length,
           itemBuilder: (context, index) {
-            // Word item
             return _WordGridItem(word: words[index], isGrid: isGrid);
           },
         ),
@@ -368,11 +352,9 @@ class _WordGridItem extends GetView<WordManageController> {
         word: word,
         isSmallTile: isGrid,
         borderColor: getBorderColor(isSelected: isSelected),
-        // Start selection mode
         onLongPress: () {
           selection.select(item: word);
         },
-        // Navigate or toggle selection
         onTap: () {
           if (selection.isSelectionMode) {
             selection.toggle(item: word);

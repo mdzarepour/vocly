@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 class PaginationState {
   final int pageSize;
 
-  PaginationState({this.pageSize = 150});
-  // --- state
+  PaginationState({this.pageSize = 10});
+
   final RxBool _isLoadingMore = false.obs;
   bool get isLoadingMore => _isLoadingMore.value;
 
@@ -21,7 +21,6 @@ class PaginationState {
     _hasMore.value = true;
   }
 
-  // --- fetch more data
   Future<void> fetchNextPage<T>({
     required int listLength,
     required Future<List<T>> Function(int limit, int offset) fetcher,
@@ -40,7 +39,6 @@ class PaginationState {
     }
   }
 
-  // --- function trigger on max scroll
   bool onScroll(ScrollNotification notification) {
     if (notification is! ScrollUpdateNotification) {
       return false;

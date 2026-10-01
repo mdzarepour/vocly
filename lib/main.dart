@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/router/vocly_router.dart';
 import 'package:vocly/app/data/model/book.dart';
 import 'package:vocly/app/data/model/word.dart';
@@ -17,6 +18,36 @@ Future<void> main() async {
     WordSchema,
     BookSchema,
   ], directory: directory.path);
+
+  final words = List.generate(1000, (index) {
+    return Word(
+      name: 'name${index}',
+      meaning: 'meaning',
+      example: 'example',
+      color: 1,
+      icon: 1,
+      isLearned: false,
+      type: WordType.article,
+      level: WordLevel.easy,
+    );
+  });
+  isar.writeTxn(() async {
+    await isar.words.putAll(words);
+  });
+  final books = List.generate(1000, (index) {
+    return Book(
+      name: 'name$index',
+      description: 'description',
+      color: 1,
+      icon: 1,
+      isLearned: false,
+      type: BookType.novel,
+      level: BookLevel.hard,
+    );
+  });
+  isar.writeTxn(() async {
+    await isar.books.putAll(books);
+  });
 
   Get.put<WordProvider>(WordProvider(isar: isar), permanent: true);
   Get.put<BookProvider>(BookProvider(isar: isar), permanent: true);

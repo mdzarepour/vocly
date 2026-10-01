@@ -6,7 +6,6 @@ class SelectionState<T> {
 
   SelectionState({required this.idOf, this.alwaysSelectionMode = false});
 
-  // --- state
   final RxSet<int> _selectedIds = <int>{}.obs;
 
   Set<int> get selectedIds => _selectedIds;
@@ -16,7 +15,6 @@ class SelectionState<T> {
     return alwaysSelectionMode || _selectedIds.isNotEmpty;
   }
 
-  // --- selecting
   bool isSelected(T item) {
     return _selectedIds.contains(idOf(item));
   }
@@ -39,7 +37,6 @@ class SelectionState<T> {
     }
   }
 
-  // --- select all
   void selectAll(Iterable<T> items) {
     for (final item in items) {
       _selectedIds.add(idOf(item));
@@ -76,7 +73,6 @@ class SelectionState<T> {
     return list.every(isSelected);
   }
 
-  // --- clear
   void clear() {
     _selectedIds.clear();
   }

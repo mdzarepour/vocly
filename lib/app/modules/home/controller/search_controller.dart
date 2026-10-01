@@ -14,7 +14,6 @@ class WordSearchController extends GetxController {
   final RxList<Word> _words = <Word>[].obs;
   List<Word> get words => _words;
 
-  // --- state
   final RxString _query = ''.obs;
   String get query => _query.value;
 
@@ -25,7 +24,6 @@ class WordSearchController extends GetxController {
     _query.value = q;
   }
 
-  // --- search
   Future<void> search() async {
     if (_loading.value == LoadingStatus.working) {
       return;
@@ -47,7 +45,6 @@ class WordSearchController extends GetxController {
     }
   }
 
-  // --- load more
   Future<void> loadMore() async {
     await paginator.fetchNextPage<Word>(
       fetcher: (limit, offset) {
@@ -64,12 +61,10 @@ class WordSearchController extends GetxController {
     );
   }
 
-  // --- navigation
   void toWordDetailsPage({required int id}) {
     Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
   }
 
-  // --- life cycle
   @override
   void onInit() {
     super.onInit();

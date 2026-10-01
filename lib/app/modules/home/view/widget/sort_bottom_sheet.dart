@@ -25,7 +25,6 @@ class SortBottomSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            //  Dragger
             Container(
               height: 5,
               width: 80,
@@ -53,7 +52,6 @@ class SortBottomSheet extends StatelessWidget {
               );
             }),
             const SizedBox(height: 5),
-            // Button
             InkWell(
               onTap: onApply,
               child: const VoclyCard(
@@ -100,7 +98,6 @@ class _SortItem extends StatelessWidget {
             Expanded(
               child: Text(value.name, style: VoclyTypography.bodyMedium),
             ),
-            // Checkbox
             SizedBox(
               width: 22,
               child: Checkbox(

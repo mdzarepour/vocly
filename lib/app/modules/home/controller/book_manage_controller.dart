@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:vocly/app/core/enum/enums.dart';
+import 'package:vocly/app/core/router/pages.dart';
 import 'package:vocly/app/core/service/dialog_service.dart';
 import 'package:vocly/app/data/model/book.dart';
-import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/data/repository/repository.dart';
 import 'package:vocly/app/shared/state/pagination_state.dart';
 import 'package:vocly/app/shared/state/selection_state.dart';
@@ -18,14 +18,12 @@ class BookManageController extends GetxController {
   late final PaginationState paginator;
   late final SelectionState bookSelection;
 
-  // --- state
   final RxList<Book> _books = <Book>[].obs;
   List<Book> get books => _books;
 
   final Rx<LoadingStatus> _loading = Rx(LoadingStatus.init);
   LoadingStatus get isLoading => _loading.value;
 
-  // --- fetch
   Future<void> fetchWords() async {
     if (_loading.value == LoadingStatus.working) {
       return;
@@ -49,7 +47,6 @@ class BookManageController extends GetxController {
     }
   }
 
-  // --- delete
   Future<void> deleteSelectedWords() async {
     final permission = await _dialogService.showDialog(
       title: 'Deleting',
@@ -73,10 +70,9 @@ class BookManageController extends GetxController {
     await fetchWords();
   }
 
-  // --- navigation
-  // void toWordDetailsPage({required int id}) {
-  //   Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
-  // }
+  void toBookDetailsPage({required int id}) {
+    Get.toNamed(Pages.bookDetailsPage, arguments: {'id': id});
+  }
 
   void toBackWithSelectedWords() {
     Get.back(result: bookSelection.selectedIds);
@@ -86,7 +82,6 @@ class BookManageController extends GetxController {
     Get.back();
   }
 
-  // --- life cycle
   @override
   void onInit() {
     bookSelection = SelectionState<Book>(idOf: (item) => item.id);
