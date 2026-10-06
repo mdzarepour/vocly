@@ -3,6 +3,7 @@ import 'package:vocly/app/core/service/dialog_service.dart';
 import 'package:vocly/app/core/service/speech_service.dart';
 import 'package:vocly/app/data/repository/repository.dart';
 import 'package:vocly/app/modules/home/controller/book_crud_controller.dart';
+import 'package:vocly/app/modules/home/controller/book_details_controller.dart';
 import 'package:vocly/app/modules/home/controller/book_manage_controller.dart';
 import 'package:vocly/app/modules/home/controller/search_controller.dart';
 import 'package:vocly/app/modules/home/controller/word_crud_controller.dart';
@@ -23,10 +24,12 @@ class WordManageBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() {
       final type = Get.arguments['type'];
+      final selectedIds = Get.arguments['selectedIds'] as List<int>? ?? [];
       return WordManageController(
         type,
         Get.find<WordRepository>(),
         Get.find<DialogService>(),
+        initialSelectedIds: selectedIds,
       );
     });
   }
@@ -87,6 +90,16 @@ class WordDetailsBinding extends Bindings {
         Get.find<SpeechService>(),
         Get.find<WordRepository>(),
       );
+    });
+  }
+}
+
+class BookDetailsBinding extends Bindings {
+  @override
+  void dependencies() {
+    final id = Get.arguments['id'];
+    Get.lazyPut(() {
+      return BookDetailsController(Get.find<BookRepository>(), id);
     });
   }
 }

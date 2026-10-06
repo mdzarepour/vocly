@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:vocly/app/core/binding/initial_binding.dart';
 import 'package:vocly/app/modules/home/binding/home_binding.dart';
 import 'package:vocly/app/modules/home/view/book_crud_page.dart';
+import 'package:vocly/app/modules/home/view/book_details_page.dart';
 import 'package:vocly/app/modules/home/view/book_manage_page.dart';
 import 'package:vocly/app/modules/home/view/home_page.dart';
 import 'package:vocly/app/modules/home/view/search_page.dart';
@@ -62,6 +63,12 @@ class VoclyRouter {
       name: Pages.bookManagePage,
       page: () => const BookManagePage(),
       binding: BookManageBinding(),
+    ),
+    GetPage(
+      showCupertinoParallax: false,
+      name: Pages.bookDetailsPage,
+      page: () => const BookDetailsPage(),
+      binding: BookDetailsBinding(),
     ),
   ];
 }

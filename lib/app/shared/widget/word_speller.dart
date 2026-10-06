@@ -4,8 +4,8 @@ import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
 import 'package:vocly/app/shared/widget/vocly_card.dart';
 
-class SpellingPractice extends StatelessWidget {
-  const SpellingPractice({
+class WordSpeller extends StatelessWidget {
+  const WordSpeller({
     required this.letters,
     required this.selectedLetterIds,
     required this.answerResult,
@@ -48,9 +48,9 @@ class SpellingPractice extends StatelessWidget {
                   children: List.generate(letters.length, (index) {
                     final hasLetter = index < selectedLetterIds.length;
                     final selectedLetter = hasLetter
-                        ? letters.firstWhere(
-                            (letter) => letter.id == selectedLetterIds[index],
-                          )
+                        ? letters.firstWhere((letter) {
+                            return letter.id == selectedLetterIds[index];
+                          })
                         : null;
                     final slotBorderColor = answerResult == null
                         ? hasLetter
@@ -61,7 +61,9 @@ class SpellingPractice extends StatelessWidget {
                         : UiColor.errorColor;
                     return InkWell(
                       onTap: hasLetter
-                          ? () => onAnswerLetterRemoved(index)
+                          ? () {
+                              onAnswerLetterRemoved(index);
+                            }
                           : null,
                       borderRadius: BorderRadius.circular(10),
                       child: _letterCard(
@@ -89,7 +91,9 @@ class SpellingPractice extends StatelessWidget {
                         return InkWell(
                           onTap: isSelected
                               ? null
-                              : () => onLetterSelected(letter.id),
+                              : () {
+                                  onLetterSelected(letter.id);
+                                },
                           borderRadius: BorderRadius.circular(10),
                           child: _letterCard(
                             borderColor: isSelected
@@ -116,11 +120,13 @@ class SpellingPractice extends StatelessWidget {
     return SizedBox(
       width: 40,
       height: 40,
-      child: VoclyCard(
-        withPadding: false,
-        height: 40,
-        borderColor: borderColor,
-        child: child,
+      child: Container(
+        decoration: BoxDecoration(
+          color: UiColor.forthColor,
+          border: Border.all(color: borderColor),
+          borderRadius: const BorderRadius.all(Radius.circular(9)),
+        ),
+        child: Center(child: child),
       ),
     );
   }

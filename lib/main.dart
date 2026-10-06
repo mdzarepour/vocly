@@ -21,7 +21,7 @@ Future<void> main() async {
 
   final words = List.generate(1000, (index) {
     return Word(
-      name: 'name${index}',
+      name: 'name$index',
       meaning: 'meaning',
       example: 'example',
       color: 1,
@@ -33,20 +33,6 @@ Future<void> main() async {
   });
   isar.writeTxn(() async {
     await isar.words.putAll(words);
-  });
-  final books = List.generate(1000, (index) {
-    return Book(
-      name: 'name$index',
-      description: 'description',
-      color: 1,
-      icon: 1,
-      isLearned: false,
-      type: BookType.novel,
-      level: BookLevel.hard,
-    );
-  });
-  isar.writeTxn(() async {
-    await isar.books.putAll(books);
   });
 
   Get.put<WordProvider>(WordProvider(isar: isar), permanent: true);

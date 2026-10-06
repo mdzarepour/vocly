@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
@@ -53,16 +53,22 @@ class SortBottomSheet extends StatelessWidget {
             }),
             const SizedBox(height: 5),
             InkWell(
-              onTap: onApply,
-              child: const VoclyCard(
-                height: 55,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 5,
-                  children: [
-                    Icon(Icons.done_all_outlined),
-                    Text('Apply Sort', style: VoclyTypography.titleMedium),
-                  ],
+              onTap: () {
+                onApply();
+                Get.back();
+              },
+              child: const SizedBox(
+                width: 250,
+                child: VoclyCard(
+                  height: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 5,
+                    children: [
+                      Icon(Icons.done_all_outlined),
+                      Text('Apply', style: VoclyTypography.titleMedium),
+                    ],
+                  ),
                 ),
               ),
             ),

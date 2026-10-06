@@ -23,7 +23,7 @@ class WordDetailsController extends GetxController {
     this._wordRepository,
   );
 
-  StreamSubscription<Word?>? wordStream;
+  StreamSubscription<Word?>? _wordStream;
   SpellingState? spellingState;
 
   final Rxn<Word> _word = Rxn<Word>();
@@ -43,7 +43,6 @@ class WordDetailsController extends GetxController {
     if (!confirmed) {
       return null;
     }
-
     try {
       await _wordRepository.deleteWords(ids: [_word.value!.id]);
       return right('${_word.value!.name} deleted');
@@ -71,7 +70,7 @@ class WordDetailsController extends GetxController {
   }
 
   void _initStream() {
-    wordStream = _wordRepository.watchWord(id: id).listen((event) {
+    _wordStream = _wordRepository.watchWord(id: id).listen((event) {
       _refreshWord(event);
     });
   }
@@ -98,7 +97,7 @@ class WordDetailsController extends GetxController {
 
   @override
   void onClose() {
-    wordStream?.cancel();
+    _wordStream?.cancel();
     super.onClose();
   }
 }

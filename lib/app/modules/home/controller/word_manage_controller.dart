@@ -13,10 +13,16 @@ class WordManageController extends GetxController {
   final WordRepository _wordRepository;
   final DialogService _dialogService;
   final WordManagerScreenType type;
+  final List<int> initialSelectedIds;
 
-  WordManageController(this.type, this._wordRepository, this._dialogService);
+  WordManageController(
+    this.type,
+    this._wordRepository,
+    this._dialogService, {
+    this.initialSelectedIds = const [],
+  });
 
-  late final StreamSubscription subscription;
+  late final StreamSubscription _subscription;
   late final PaginationState paginator;
   late final FilteringState filterState;
   late final SelectionState wordSelection;
@@ -30,6 +36,9 @@ class WordManageController extends GetxController {
   final Rx<ScreenLayout> _layout = ScreenLayout.listView.obs;
   ScreenLayout get layout => _layout.value;
 
+  /// Incremented on every refresh so results of an outdated fetch are ignored.
+  int _generation = 0;
+
   void toggleLayout() {
     _layout.value = _layout.value == ScreenLayout.gridView
         ? ScreenLayout.listView
@@ -37,53 +46,51 @@ class WordManageController extends GetxController {
   }
 
   Future<void> fetchWords() async {
-    if (_loading.value == LoadingStatus.working) {
-      return;
-    }
+    if (_loading.value == LoadingStatus.working) return;
+
+    final generation = _generation;
     if (_loading.value != LoadingStatus.init) {
       _loading.value = LoadingStatus.working;
     }
     try {
       await paginator.fetchNextPage<Word>(
-        fetcher: (limit, offset) async {
-          return _wordRepository.getWordsPage(
-            filter: filterState.filter,
-            sort: filterState.sort,
-            offset: offset,
-            limit: limit,
-          );
-        },
+        fetcher: (limit, offset) async => _wordRepository.getWordsPage(
+          filter: filterState.filter,
+          sort: filterState.sort,
+          offset: offset,
+          limit: limit,
+        ),
         onSuccess: (value) {
-          _words.addAll(value);
+          if (generation == _generation) _words.addAll(value);
         },
         listLength: words.length,
       );
     } finally {
-      _loading.value = LoadingStatus.none;
+      if (generation == _generation) _loading.value = LoadingStatus.none;
     }
   }
 
+  Future<void> refreshPage() {
+    _generation++;
+    _words.clear();
+    paginator.reset();
+    _loading.value = LoadingStatus.none; // allow a new fetch immediately
+    return fetchWords();
+  }
+
   Future<void> deleteSelectedWords() async {
+    final ids = wordSelection.selectedIds.toList();
+    if (ids.isEmpty) return;
+
     final permission = await _dialogService.showDialog(
       title: 'Deleting',
       content: 'Are you sure about deleting words',
       confirmTitle: 'Delete',
     );
-    if (!permission) {
-      return;
-    }
-    final ids = wordSelection.selectedIds.toList();
-    if (ids.isEmpty) {
-      return;
-    }
+    if (!permission) return;
+
     await _wordRepository.deleteWords(ids: ids);
     wordSelection.clear();
-  }
-
-  Future<void> refreshPage() async {
-    _words.clear();
-    paginator.reset();
-    await fetchWords();
   }
 
   void toWordDetailsPage({required int id}) {
@@ -91,12 +98,10 @@ class WordManageController extends GetxController {
   }
 
   void toBackWithSelectedWords() {
-    Get.back(result: wordSelection.selectedIds);
+    Get.back(result: wordSelection.selectedIds.toList());
   }
 
-  void toBack() {
-    Get.back();
-  }
+  void toBack() => Get.back();
 
   @override
   void onInit() {
@@ -104,17 +109,16 @@ class WordManageController extends GetxController {
       idOf: (item) => item.id,
       alwaysSelectionMode: type == WordManagerScreenType.selectWords,
     );
+    wordSelection.selectedIds.addAll(initialSelectedIds);
     paginator = PaginationState();
     filterState = FilteringState();
-    subscription = _wordRepository.watchWords().listen((event) {
-      refreshPage();
-    });
+    _subscription = _wordRepository.watchWords().listen((_) => refreshPage());
     super.onInit();
   }
 
   @override
   void onClose() {
+    _subscription.cancel();
     super.onClose();
-    subscription.cancel();
   }
 }

@@ -21,9 +21,14 @@ class BookProvider {
     });
   }
 
-  Future<void> updateBook({required Book book}) async {
+  Future<void> updateBook({
+    required Book book,
+    required List<Word> words,
+  }) async {
     await isar.writeTxn(() async {
       await isar.books.put(book);
+      book.words.assignAll(words);
+      await book.words.save();
     });
   }
 
@@ -36,6 +41,10 @@ class BookProvider {
     return isar.books.get(id);
   }
 
+  Stream<Book?> watchBook({required int id}) {
+    return isar.books.watchObject(id);
+  }
+
   Stream<void> watchBooks() {
     return isar.books.watchLazy(fireImmediately: true);
   }
@@ -45,5 +54,18 @@ class BookProvider {
     required int offset,
   }) async {
     return await isar.books.where().offset(offset).limit(limit).findAll();
+  }
+
+  Future<List<Word>> getBookWordsPage({
+    required int bookId,
+    required int offset,
+    required int limit,
+  }) async {
+    final book = await isar.books.get(bookId);
+    if (book == null) {
+      return [];
+    }
+    await book.words.load();
+    return await book.words.filter().offset(offset).limit(limit).findAll();
   }
 }

@@ -75,7 +75,7 @@ class FilterBottomSheet<T> extends StatelessWidget {
                     spacing: 5,
                     children: [
                       Icon(Icons.done_all_outlined),
-                      Text('Apply filters', style: VoclyTypography.titleMedium),
+                      Text('Apply', style: VoclyTypography.titleMedium),
                     ],
                   ),
                 ),

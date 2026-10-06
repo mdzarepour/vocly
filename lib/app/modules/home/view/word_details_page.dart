@@ -5,7 +5,7 @@ import 'package:vocly/app/data/model/word.dart';
 import 'package:vocly/app/modules/home/controller/word_details_controller.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/constant/vocly_icon.dart';
-import 'package:vocly/app/shared/widget/spelling_practice.dart';
+import 'package:vocly/app/shared/widget/word_speller.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
 import 'package:vocly/app/shared/widget/vocly_card.dart';
 import 'package:vocly/app/shared/widget/vocly_loading.dart';
@@ -202,11 +202,11 @@ class _SpellingPracticeWidget extends GetView<WordDetailsController> {
     return Obx(() {
       final word = controller.word;
       final spellingState = controller.spellingState;
-      final letters = spellingState!.selectedLetterIds.toList();
-      if (word == null) {
+      if (word == null || spellingState == null) {
         return const SizedBox.shrink();
       }
-      return SpellingPractice(
+      final letters = spellingState.selectedLetterIds.toList();
+      return WordSpeller(
         letters: spellingState.letters,
         selectedLetterIds: letters,
         answerResult: spellingState.answerResult.value,

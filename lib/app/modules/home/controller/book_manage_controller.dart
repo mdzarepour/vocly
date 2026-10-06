@@ -34,7 +34,6 @@ class BookManageController extends GetxController {
     try {
       await paginator.fetchNextPage<Book>(
         fetcher: (limit, offset) async {
-          await Future.delayed(const Duration(milliseconds: 350));
           return _bookRepository.getBooksPage(offset: offset, limit: limit);
         },
         onSuccess: (value) {

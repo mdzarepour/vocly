@@ -81,7 +81,7 @@ class BookCrudPage extends GetView<BookCrudController> {
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
                 _iconSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
-                                _colorSelector(),
+                _colorSelector(),
                 const SliverToBoxAdapter(child: SizedBox(height: 25)),
 
                 _actionButtons(),

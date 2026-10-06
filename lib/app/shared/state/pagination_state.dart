@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class PaginationState {
   final int pageSize;
 
-  PaginationState({this.pageSize = 10});
+  PaginationState({this.pageSize = 100});
 
   final RxBool _isLoadingMore = false.obs;
   bool get isLoadingMore => _isLoadingMore.value;

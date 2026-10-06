@@ -9,12 +9,18 @@ import 'package:vocly/app/data/provider/word_provider.dart';
 
 abstract class BookRepository {
   Future<void> addBook({required Book book, required List<int> ids});
-  Future<void> updateBook({required Book book});
+  Future<void> updateBook({required Book book, required List<int> ids});
   Future<bool> isBookExist({required String name});
   Future<Book?> getBook({required int id});
+  Stream<Book?> watchBook({required int id});
   Stream<void> watchBooks();
   Future<List<Book>> getBooksPage({required int offset, required int limit});
   Future<void> deleteBooks({required List<int> ids});
+  Future<List<Word>> getBookWordsPage({
+    required int bookId,
+    required int offset,
+    required int limit,
+  });
 }
 
 abstract class WordRepository {
@@ -161,9 +167,13 @@ class Repository implements WordRepository, BookRepository {
   }
 
   @override
-  Future<void> updateBook({required Book book}) async {
+  Future<void> updateBook({
+    required Book book,
+    required List<int> ids,
+  }) async {
     try {
-      await bookProvider.updateBook(book: book);
+      final words = await wordProvider.getWordsById(ids: ids);
+      await bookProvider.updateBook(book: book, words: words);
     } on IsarError catch (error) {
       throw AppError(errorMessage: error.message, cause: error);
     }
@@ -212,6 +222,32 @@ class Repository implements WordRepository, BookRepository {
   Stream<void> watchBooks() {
     try {
       return bookProvider.watchBooks();
+    } on IsarError catch (error) {
+      throw AppError(errorMessage: error.message, cause: error);
+    }
+  }
+
+  @override
+  Stream<Book?> watchBook({required int id}) {
+    try {
+      return bookProvider.watchBook(id: id);
+    } on IsarError catch (error) {
+      throw AppError(errorMessage: error.message, cause: error);
+    }
+  }
+
+  @override
+  Future<List<Word>> getBookWordsPage({
+    required int bookId,
+    required int offset,
+    required int limit,
+  }) async {
+    try {
+      return await bookProvider.getBookWordsPage(
+        bookId: bookId,
+        offset: offset,
+        limit: limit,
+      );
     } on IsarError catch (error) {
       throw AppError(errorMessage: error.message, cause: error);
     }
