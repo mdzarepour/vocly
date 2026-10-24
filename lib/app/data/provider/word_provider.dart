@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:isar_community/isar.dart';
 import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/data/model/filter.dart';
@@ -117,5 +119,14 @@ class WordProvider {
         break;
     }
     return await sorted.offset(offset).limit(limit).findAll();
+  }
+
+  Future<Uint8List> exportWords() async {
+    final List<Word> words = await isar.words.where().findAll();
+    final String jsonString = jsonEncode(
+      words.map((word) => word.toMap()).toList(),
+    );
+    final bytes = Uint8List.fromList(utf8.encode(jsonString));
+    return bytes;
   }
 }

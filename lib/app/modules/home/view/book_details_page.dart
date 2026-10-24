@@ -52,10 +52,6 @@ class BookDetailsPage extends GetView<BookDetailsController> {
   }
 }
 
-// -------------------------------------------------------------
-// BOOK CARD
-// -------------------------------------------------------------
-
 class _BookCard extends GetView<BookDetailsController> {
   const _BookCard();
 
@@ -160,10 +156,6 @@ class _BookCardBack extends StatelessWidget {
   }
 }
 
-// -------------------------------------------------------------
-// EDIT BUTTON
-// -------------------------------------------------------------
-
 class _EditButton extends GetView<BookDetailsController> {
   const _EditButton();
 
@@ -178,10 +170,6 @@ class _EditButton extends GetView<BookDetailsController> {
     );
   }
 }
-
-// -------------------------------------------------------------
-// WORDS
-// -------------------------------------------------------------
 
 class _WordsGrid extends GetView<BookDetailsController> {
   const _WordsGrid();

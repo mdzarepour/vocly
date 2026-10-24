@@ -71,18 +71,16 @@ class _WordCard extends GetView<WordDetailsController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final word = controller.word;
+      final spellingState = controller.spellingState;
+      final isExpanded = spellingState?.isExpanded.value ?? false;
       if (word == null) {
         return const VoclyCard(height: 200, child: VoclyLoading());
       }
-      final spellingState = controller.spellingState;
       return FlipCard(
         direction: FlipDirection.VERTICAL,
         speed: 250,
-        front: _WordCardFront(
-          word: word,
-          isExpanded: spellingState?.isExpanded.value ?? false,
-        ),
-        back: _WordCardBack(word: word),
+        front: _WordCardFront(word: word, isExpanded: isExpanded),
+        back: _WordCardBack(word: word, isExpanded: isExpanded),
       );
     });
   }
@@ -135,10 +133,15 @@ class _WordCardFront extends StatelessWidget {
 
 class _WordCardBack extends StatelessWidget {
   final Word word;
-  const _WordCardBack({required this.word});
+  final bool isExpanded;
+  const _WordCardBack({required this.word, required this.isExpanded});
 
   @override
   Widget build(BuildContext context) {
+    String wordExample = word.example.capitalizeFirst ?? word.example;
+    if (isExpanded) {
+      wordExample = word.name.replaceAll(RegExp(r'.', dotAll: true), '*');
+    }
     return Stack(
       children: [
         VoclyCard(
@@ -155,7 +158,7 @@ class _WordCardBack extends StatelessWidget {
                   style: VoclyTypography.displayMedium,
                 ),
                 Text(
-                  word.example,
+                  wordExample,
                   textAlign: TextAlign.center,
                   style: VoclyTypography.titleMedium,
                 ),

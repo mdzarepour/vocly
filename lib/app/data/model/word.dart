@@ -49,7 +49,7 @@ class Word {
     required this.level,
   });
 
-  factory Word.create({required Map<String, dynamic> map}) {
+  factory Word.fromMap({required Map<String, dynamic> map}) {
     return Word(
       name: map['name'],
       meaning: map['meaning'],
@@ -57,9 +57,22 @@ class Word {
       color: map['color'],
       icon: map['icon'],
       isLearned: map['isLearned'],
-      type: map['type'],
-      level: map['level'],
+      type: WordType.values[map['type']],
+      level: WordLevel.values[map['level']],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'meaning': meaning,
+      'example': example,
+      'color': color,
+      'icon': icon,
+      'isLearned': isLearned,
+      'type': type.index,
+      'level': level.index,
+    };
   }
 
   void updateWord({

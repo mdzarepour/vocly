@@ -23,9 +23,6 @@ class BookCrudController extends GetxController {
 
   late final TextEditingController nameController;
   late final TextEditingController descriptionController;
-
-  /// Completes when the editing book (and its words) is fully loaded.
-  /// Submitting must wait for it, otherwise an empty word list would be saved.
   late final Future<void> ready;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

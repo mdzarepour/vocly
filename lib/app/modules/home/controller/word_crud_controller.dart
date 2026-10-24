@@ -50,7 +50,7 @@ class WordCrudController extends GetxController {
 
   Future<Either<String, String>> addWord() async {
     try {
-      final newWord = Word.create(map: _ctreateMap());
+      final newWord = Word.fromMap(map: _ctreateMap());
       final isExist = await _wordRepository.isWordExist(name: newWord.name);
       if (isExist) {
         final permission = await _dialogService.showDialog(

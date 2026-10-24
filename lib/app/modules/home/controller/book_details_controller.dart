@@ -25,7 +25,6 @@ class BookDetailsController extends GetxController {
   final Rx<LoadingStatus> _loading = Rx(LoadingStatus.init);
   LoadingStatus get isLoading => _loading.value;
 
-  /// Incremented on every refresh so results of an outdated fetch are ignored.
   int _generation = 0;
 
   Future<void> toBookCrudPage() async {
@@ -75,7 +74,7 @@ class BookDetailsController extends GetxController {
     _generation++;
     _words.clear();
     paginator.reset();
-    _loading.value = LoadingStatus.none; // allow a new fetch immediately
+    _loading.value = LoadingStatus.none;
     return fetchWords();
   }
 

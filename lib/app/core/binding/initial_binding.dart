@@ -1,6 +1,8 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:vocly/app/core/service/dialog_service.dart';
+import 'package:vocly/app/core/service/luncher_service.dart';
+import 'package:vocly/app/core/service/platform_service.dart';
 import 'package:vocly/app/core/service/speech_service.dart';
 import 'package:vocly/app/data/provider/book_provider.dart';
 import 'package:vocly/app/data/provider/word_provider.dart';
@@ -19,9 +21,17 @@ class InitialBinding extends Bindings {
     Get.put<BookRepository>(repository, permanent: true);
 
     Get.lazyPut(() => SpeechService(flutterTts: FlutterTts()), fenix: true);
+    Get.lazyPut(() => PlatformService(), fenix: true);
+    Get.lazyPut(() => LuncherService(), fenix: true);
     Get.lazyPut(() => DialogService(), fenix: true);
 
     Get.lazyPut(() => ShellController(), fenix: true);
-    Get.lazyPut(() => HomeController());
+    Get.lazyPut(
+      () => HomeController(
+        Get.find<LuncherService>(),
+        Get.find<PlatformService>(),
+        Get.find<WordRepository>(),
+      ),
+    );
   }
 }

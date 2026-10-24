@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:isar_community/isar.dart';
 import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/core/error/vocly_error.dart';
@@ -45,6 +46,7 @@ abstract class WordRepository {
   });
 
   Future<void> deleteWords({required List<int> ids});
+  Future<Uint8List> exportWords();
 }
 
 class Repository implements WordRepository, BookRepository {
@@ -154,6 +156,15 @@ class Repository implements WordRepository, BookRepository {
     }
   }
 
+  @override
+  Future<Uint8List> exportWords() async {
+    try {
+      return await wordProvider.exportWords();
+    } on IsarError catch (error) {
+      throw AppError(errorMessage: error.message, cause: error);
+    }
+  }
+
   // -------------------------------------------------------------
 
   @override
@@ -167,10 +178,7 @@ class Repository implements WordRepository, BookRepository {
   }
 
   @override
-  Future<void> updateBook({
-    required Book book,
-    required List<int> ids,
-  }) async {
+  Future<void> updateBook({required Book book, required List<int> ids}) async {
     try {
       final words = await wordProvider.getWordsById(ids: ids);
       await bookProvider.updateBook(book: book, words: words);

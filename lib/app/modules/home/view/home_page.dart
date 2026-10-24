@@ -65,7 +65,7 @@ class HomePage extends GetView<HomeController> {
           title: 'Use prepared books',
           data: 'Import popular vocabulary books',
           icon: Icons.coffee_outlined,
-          onTap: () {},
+          onTap: controller.goToPreparedBooksWebPage,
         ),
         const SizedBox(height: 25),
         const Text(' Backup your data', style: VoclyTypography.titleMedium),
@@ -74,7 +74,7 @@ class HomePage extends GetView<HomeController> {
           title: 'Export your vocabulary',
           data: 'Backup your words as a pdf file',
           icon: Icons.folder_outlined,
-          onTap: () {},
+          onTap: controller.exportWords,
         ),
         const SizedBox(height: 10),
         _HomeButton(
