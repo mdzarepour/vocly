@@ -6,7 +6,7 @@ class AppError implements Exception {
 
   @override
   String toString() {
-    return 'AppExeption(message: $errorMessage)';
+    return "AppExeption(message: $errorMessage)";
   }
 }
 
@@ -19,6 +19,6 @@ class AppSuccess<T> implements Exception {
 
   @override
   String toString() {
-    return 'AppExeption(message: $successMessage)';
+    return "AppExeption(message: $successMessage)";
   }
 }

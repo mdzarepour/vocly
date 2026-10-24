@@ -23,7 +23,7 @@ class BookCrudPage extends GetView<BookCrudController> {
         appBar: AppBar(
           centerTitle: false,
           title: Text(
-            _isEditing ? 'Edit book' : 'Add new book',
+            _isEditing ? "Edit book" : "Add new book",
             style: VoclyTypography.titleMedium,
           ),
         ),
@@ -37,7 +37,7 @@ class BookCrudPage extends GetView<BookCrudController> {
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
                 const SliverToBoxAdapter(
                   child: Text(
-                    'Book details',
+                    "Book details",
                     style: VoclyTypography.titleMedium,
                   ),
                 ),
@@ -46,7 +46,7 @@ class BookCrudPage extends GetView<BookCrudController> {
                   child: VoclyInput(
                     controller: controller.nameController,
                     icon: Icons.language_outlined,
-                    hint: 'Name',
+                    hint: "Name",
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
@@ -54,7 +54,7 @@ class BookCrudPage extends GetView<BookCrudController> {
                   child: VoclyInput(
                     controller: controller.descriptionController,
                     icon: Icons.lightbulb_outline,
-                    hint: 'Description',
+                    hint: "Description",
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
@@ -65,7 +65,7 @@ class BookCrudPage extends GetView<BookCrudController> {
                 const SliverToBoxAdapter(child: SizedBox(height: 25)),
                 const SliverToBoxAdapter(
                   child: Text(
-                    'Word visual',
+                    "Word visual",
                     style: VoclyTypography.titleMedium,
                   ),
                 ),
@@ -74,7 +74,7 @@ class BookCrudPage extends GetView<BookCrudController> {
                 const SliverToBoxAdapter(child: SizedBox(height: 25)),
                 const SliverToBoxAdapter(
                   child: Text(
-                    'Word visual',
+                    "Word visual",
                     style: VoclyTypography.titleMedium,
                   ),
                 ),
@@ -100,7 +100,7 @@ class BookCrudPage extends GetView<BookCrudController> {
         onTap: controller.toManageWordsPage,
         child: const VoclyCard(
           height: 50,
-          child: Text(style: VoclyTypography.titleMedium, 'Words'),
+          child: Text(style: VoclyTypography.titleMedium, "Words"),
         ),
       ),
     );
@@ -110,7 +110,7 @@ class BookCrudPage extends GetView<BookCrudController> {
     return SliverToBoxAdapter(
       child: Obx(() {
         return PropertySelector<BookType>(
-          title: 'Type',
+          title: "Type",
           properties: BookType.values,
           selectedProperty: controller.type.value,
           onSelected: (type) {
@@ -131,7 +131,7 @@ class BookCrudPage extends GetView<BookCrudController> {
     return SliverToBoxAdapter(
       child: Obx(() {
         return PropertySelector<BookLevel>(
-          title: 'Level',
+          title: "Level",
           properties: BookLevel.values,
           selectedProperty: controller.level.value,
           onSelected: (level) {
@@ -154,7 +154,7 @@ class BookCrudPage extends GetView<BookCrudController> {
       child: Obx(() {
         final selectedIndex = controller.icon.value;
         return PropertySelector<IconData>(
-          title: 'Icon',
+          title: "Icon",
           properties: icons,
           selectedProperty: icons[selectedIndex],
           onSelected: (icon) {
@@ -174,7 +174,7 @@ class BookCrudPage extends GetView<BookCrudController> {
       child: Obx(() {
         final selectedIndex = controller.color.value;
         return PropertySelector<Color>(
-          title: 'Color',
+          title: "Color",
           properties: colors,
           selectedProperty: colors[selectedIndex],
           onSelected: (color) {
@@ -199,7 +199,7 @@ class BookCrudPage extends GetView<BookCrudController> {
           Expanded(
             child: _ActionButton(
               icon: Icons.done_outlined,
-              title: _isEditing ? 'Update book' : 'Add book',
+              title: _isEditing ? "Update book" : "Add book",
               borderColor: UiColor.positiveColor,
               onTap: _submit,
             ),
@@ -208,7 +208,7 @@ class BookCrudPage extends GetView<BookCrudController> {
           Expanded(
             child: _ActionButton(
               icon: Icons.cancel_outlined,
-              title: 'Cancel',
+              title: "Cancel",
               borderColor: UiColor.errorColor,
               onTap: controller.goBack,
             ),

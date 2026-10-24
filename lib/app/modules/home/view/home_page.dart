@@ -4,6 +4,7 @@ import 'package:vocly/app/modules/home/controller/home_controller.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
 import 'package:vocly/app/shared/widget/vocly_card.dart';
+import 'package:vocly/app/shared/widget/vocly_snackbar.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -15,23 +16,23 @@ class HomePage extends GetView<HomeController> {
       children: [
         _searchWidget(),
         const SizedBox(height: 40),
-        const Text(' Your vocabulary', style: VoclyTypography.titleMedium),
+        const Text(" Your vocabulary", style: VoclyTypography.titleMedium),
         const SizedBox(height: 15),
         Row(
           spacing: 10,
           children: [
             Expanded(
               child: _HomeButton(
-                title: 'Books',
-                data: '1 book',
+                title: "Books",
+                data: "1 book",
                 icon: Icons.menu_book_outlined,
                 onTap: controller.toBookManagePage,
               ),
             ),
             Expanded(
               child: _HomeButton(
-                title: 'Words',
-                data: '5 words',
+                title: "Words",
+                data: "5 words",
                 icon: Icons.language_outlined,
                 onTap: controller.toWordManagePage,
               ),
@@ -44,14 +45,14 @@ class HomePage extends GetView<HomeController> {
           children: [
             Expanded(
               child: _HomeButton(
-                title: 'Add book',
+                title: "Add book",
                 icon: Icons.add,
                 onTap: controller.toBookCrudPage,
               ),
             ),
             Expanded(
               child: _HomeButton(
-                title: 'Add word',
+                title: "Add word",
                 icon: Icons.add,
                 onTap: controller.toWordCrudPage,
               ),
@@ -59,29 +60,52 @@ class HomePage extends GetView<HomeController> {
           ],
         ),
         const SizedBox(height: 25),
-        const Text(' Download read books', style: VoclyTypography.titleMedium),
+        const Text(
+          " Download and read books",
+          style: VoclyTypography.titleMedium,
+        ),
         const SizedBox(height: 15),
         _HomeButton(
-          title: 'Use prepared books',
-          data: 'Import popular vocabulary books',
+          title: "Use prepared books",
+          data: "Import popular vocabulary books",
           icon: Icons.coffee_outlined,
           onTap: controller.goToPreparedBooksWebPage,
         ),
         const SizedBox(height: 25),
-        const Text(' Backup your data', style: VoclyTypography.titleMedium),
+        const Text(" Backup your data", style: VoclyTypography.titleMedium),
         const SizedBox(height: 15),
         _HomeButton(
-          title: 'Export your vocabulary',
-          data: 'Backup your words as a pdf file',
+          title: "Export your vocabulary",
+          data: "Backup your words as a pdf file",
           icon: Icons.folder_outlined,
-          onTap: controller.exportWords,
+          onTap: () async {
+            final either = await controller.exportWords();
+            either.fold(
+              (success) {
+                Get.showSnackbar(VoclySnackbar(message: success));
+              },
+              (error) {
+                Get.showSnackbar(VoclySnackbar(message: error));
+              },
+            );
+          },
         ),
         const SizedBox(height: 10),
         _HomeButton(
-          title: 'Use prepared books',
-          data: 'Import you backup vocabulary',
+          title: "Import your vocabulary",
+          data: "Import you backup vocabulary",
           icon: Icons.import_export_outlined,
-          onTap: () {},
+          onTap: () async {
+            final either = await controller.importWords();
+            either.fold(
+              (success) {
+                Get.showSnackbar(VoclySnackbar(message: success));
+              },
+              (error) {
+                Get.showSnackbar(VoclySnackbar(message: error));
+              },
+            );
+          },
         ),
       ],
     );
@@ -107,7 +131,7 @@ class HomePage extends GetView<HomeController> {
                 child: Icon(Icons.menu),
               ),
             ),
-            const Text(style: VoclyTypography.titleMedium, 'Search'),
+            const Text(style: VoclyTypography.titleMedium, "Search"),
             const Spacer(),
             InkWell(
               onTap: () {},

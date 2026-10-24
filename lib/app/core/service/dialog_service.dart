@@ -55,7 +55,7 @@ class _DialogWidget extends StatelessWidget {
                 child: const VoclyCard(
                   height: 60,
                   child: Center(
-                    child: Text('Cancel', style: VoclyTypography.titleMedium),
+                    child: Text("Cancel", style: VoclyTypography.titleMedium),
                   ),
                 ),
               ),

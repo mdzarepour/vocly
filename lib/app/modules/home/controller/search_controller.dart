@@ -62,7 +62,7 @@ class WordSearchController extends GetxController {
   }
 
   void toWordDetailsPage({required int id}) {
-    Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
+    Get.toNamed(Pages.wordDetailsPage, arguments: {"id": id});
   }
 
   @override

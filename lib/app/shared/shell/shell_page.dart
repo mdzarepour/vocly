@@ -55,15 +55,15 @@ class _BottomNavigation extends GetView<ShellController> {
             },
             items: [
               BottomNavigationBarItem(
-                label: 'Home',
+                label: "Home",
                 icon: Icon(index == 0 ? Icons.home : Icons.home_outlined),
               ),
               BottomNavigationBarItem(
-                label: 'Practice',
+                label: "Practice",
                 icon: Icon(index == 1 ? Icons.school : Icons.school_outlined),
               ),
               BottomNavigationBarItem(
-                label: 'Examp',
+                label: "Examp",
                 icon: Icon(
                   index == 2 ? Icons.assignment : Icons.assignment_outlined,
                 ),

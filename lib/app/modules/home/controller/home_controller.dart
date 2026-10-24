@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/route_manager.dart';
@@ -10,24 +11,37 @@ import 'package:vocly/app/core/service/platform_service.dart';
 import 'package:vocly/app/data/repository/repository.dart';
 
 class HomeController extends GetxController {
-  final WordRepository wordRepository;
+  final WordRepository _wordRepository;
   final LuncherService _luncherService;
   final PlatformService _platformService;
 
   HomeController(
     this._luncherService,
     this._platformService,
-    this.wordRepository,
+    this._wordRepository,
   );
 
   Future<Either<String, String>> exportWords() async {
     try {
-      final Uint8List bytes = await wordRepository.exportWords();
+      final Uint8List bytes = await _wordRepository.exportWords();
       final result = await _platformService.saveBackupFile(bytes: bytes);
       if (result == null) {
-        return left('Faild! please try again');
+        return left("Faild! please try again");
       }
       return right("Backup saved Successfully");
+    } on AppError catch (e) {
+      return left(e.errorMessage);
+    }
+  }
+
+  Future<Either<String, String>> importWords() async {
+    try {
+      final bytes = await _platformService.getBackupFile();
+      if (bytes != null) {
+        await _wordRepository.importWords(data: utf8.decode(bytes));
+        return right("File imported successfully");
+      }
+      return left("Fail to import!");
     } on AppError catch (e) {
       return left(e.errorMessage);
     }
@@ -40,7 +54,7 @@ class HomeController extends GetxController {
   void toWordManagePage() {
     Get.toNamed(
       Pages.wordManagePage,
-      arguments: {'type': WordManagerScreenType.manageWords},
+      arguments: {"type": WordManagerScreenType.manageWords},
     );
   }
 
@@ -49,11 +63,11 @@ class HomeController extends GetxController {
   }
 
   void toWordCrudPage() {
-    Get.toNamed(Pages.wordCrudPage, arguments: {'type': CrudScreenType.add});
+    Get.toNamed(Pages.wordCrudPage, arguments: {"type": CrudScreenType.add});
   }
 
   void toBookCrudPage() {
-    Get.toNamed(Pages.bookCrudPage, arguments: {'type': CrudScreenType.add});
+    Get.toNamed(Pages.bookCrudPage, arguments: {"type": CrudScreenType.add});
   }
 
   void toSearchPage() {

@@ -30,14 +30,14 @@ class BookDetailsController extends GetxController {
   Future<void> toBookCrudPage() async {
     await Get.toNamed(
       Pages.bookCrudPage,
-      arguments: {'id': id, 'type': CrudScreenType.edit},
+      arguments: {"id": id, "type": CrudScreenType.edit},
     );
     await _setBook(await _bookRepository.getBook(id: id));
     await refreshWords();
   }
 
   Future<void> toWordDetailsPage({required int id}) async {
-    await Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
+    await Get.toNamed(Pages.wordDetailsPage, arguments: {"id": id});
     await refreshWords();
   }
 

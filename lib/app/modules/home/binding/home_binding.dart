@@ -23,8 +23,8 @@ class WordManageBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() {
-      final type = Get.arguments['type'];
-      final selectedIds = Get.arguments['selectedIds'] as List<int>? ?? [];
+      final type = Get.arguments["type"];
+      final selectedIds = Get.arguments["selectedIds"] as List<int>? ?? [];
       return WordManageController(
         type,
         Get.find<WordRepository>(),
@@ -51,8 +51,8 @@ class WordCrudBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() {
-      final id = Get.arguments['id'];
-      final type = Get.arguments['type'];
+      final id = Get.arguments["id"];
+      final type = Get.arguments["type"];
       return WordCrudController(
         id,
         type,
@@ -67,8 +67,8 @@ class BookCrudBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() {
-      final id = Get.arguments['id'];
-      final type = Get.arguments['type'];
+      final id = Get.arguments["id"];
+      final type = Get.arguments["type"];
       return BookCrudController(
         id,
         type,
@@ -82,7 +82,7 @@ class BookCrudBinding extends Bindings {
 class WordDetailsBinding extends Bindings {
   @override
   void dependencies() {
-    final id = Get.arguments['id'];
+    final id = Get.arguments["id"];
     Get.lazyPut(() {
       return WordDetailsController(
         id,
@@ -97,7 +97,7 @@ class WordDetailsBinding extends Bindings {
 class BookDetailsBinding extends Bindings {
   @override
   void dependencies() {
-    final id = Get.arguments['id'];
+    final id = Get.arguments["id"];
     Get.lazyPut(() {
       return BookDetailsController(Get.find<BookRepository>(), id);
     });

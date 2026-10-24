@@ -54,16 +54,16 @@ class WordCrudController extends GetxController {
       final isExist = await _wordRepository.isWordExist(name: newWord.name);
       if (isExist) {
         final permission = await _dialogService.showDialog(
-          title: 'You are already have this word!',
-          content: 'Do you want to add twice?',
-          confirmTitle: 'Confirm',
+          title: "You are already have this word!",
+          content: "Do you want to add twice?",
+          confirmTitle: "Confirm",
         );
         if (!permission) {
-          return left('Permission denied');
+          return left("Permission denied");
         }
       }
       await _wordRepository.addWord(word: newWord);
-      return right('${newWord.name.capitalizeFirst} added');
+      return right("${newWord.name.capitalizeFirst} added");
     } on AppError catch (e) {
       return left(e.errorMessage);
     }
@@ -73,16 +73,16 @@ class WordCrudController extends GetxController {
     try {
       final map = _ctreateMap();
       _editingWord!.updateWord(
-        newColor: map['color'],
-        newExample: map['example'],
-        newIcon: map['icon'],
-        newLevel: map['level'],
-        newMeaning: map['meaning'],
-        newName: map['name'],
-        newType: map['type'],
+        newColor: map["color"],
+        newExample: map["example"],
+        newIcon: map["icon"],
+        newLevel: map["level"],
+        newMeaning: map["meaning"],
+        newName: map["name"],
+        newType: map["type"],
       );
       await _wordRepository.updateWord(word: _editingWord!);
-      return right('${_editingWord!.name} updated');
+      return right("${_editingWord!.name} updated");
     } on AppError catch (e) {
       return left(e.errorMessage);
     }
@@ -90,14 +90,14 @@ class WordCrudController extends GetxController {
 
   Map<String, dynamic> _ctreateMap() {
     return {
-      'name': nameController.text,
-      'meaning': meaningController.text,
-      'example': exampleController.text,
-      'type': type.value,
-      'level': level.value,
-      'icon': icon.value,
-      'color': color.value,
-      'isLearned': false,
+      "name": nameController.text,
+      "meaning": meaningController.text,
+      "example": exampleController.text,
+      "type": type.value,
+      "level": level.value,
+      "icon": icon.value,
+      "color": color.value,
+      "isLearned": false,
     };
   }
 

@@ -36,7 +36,6 @@ class WordManageController extends GetxController {
   final Rx<ScreenLayout> _layout = ScreenLayout.listView.obs;
   ScreenLayout get layout => _layout.value;
 
-  /// Incremented on every refresh so results of an outdated fetch are ignored.
   int _generation = 0;
 
   void toggleLayout() {
@@ -74,7 +73,7 @@ class WordManageController extends GetxController {
     _generation++;
     _words.clear();
     paginator.reset();
-    _loading.value = LoadingStatus.none; // allow a new fetch immediately
+    _loading.value = LoadingStatus.none;
     return fetchWords();
   }
 
@@ -83,9 +82,9 @@ class WordManageController extends GetxController {
     if (ids.isEmpty) return;
 
     final permission = await _dialogService.showDialog(
-      title: 'Deleting',
-      content: 'Are you sure about deleting words',
-      confirmTitle: 'Delete',
+      title: "Deleting",
+      content: "Are you sure about deleting words",
+      confirmTitle: "Delete",
     );
     if (!permission) return;
 
@@ -94,7 +93,7 @@ class WordManageController extends GetxController {
   }
 
   void toWordDetailsPage({required int id}) {
-    Get.toNamed(Pages.wordDetailsPage, arguments: {'id': id});
+    Get.toNamed(Pages.wordDetailsPage, arguments: {"id": id});
   }
 
   void toBackWithSelectedWords() {

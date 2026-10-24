@@ -24,7 +24,7 @@ class WordCrudPage extends GetView<WordCrudController> {
         appBar: AppBar(
           centerTitle: false,
           title: Text(
-            _isEditing ? 'Edit word' : 'Add new word',
+            _isEditing ? "Edit word" : "Add new word",
             style: VoclyTypography.titleMedium,
           ),
         ),
@@ -38,7 +38,7 @@ class WordCrudPage extends GetView<WordCrudController> {
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
                 const SliverToBoxAdapter(
                   child: Text(
-                    'Word details',
+                    "Word details",
                     style: VoclyTypography.titleMedium,
                   ),
                 ),
@@ -47,7 +47,7 @@ class WordCrudPage extends GetView<WordCrudController> {
                   child: VoclyInput(
                     controller: controller.nameController,
                     icon: Icons.language_outlined,
-                    hint: 'Name',
+                    hint: "Name",
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
@@ -55,7 +55,7 @@ class WordCrudPage extends GetView<WordCrudController> {
                   child: VoclyInput(
                     controller: controller.meaningController,
                     icon: Icons.lightbulb_outline,
-                    hint: 'Meaning',
+                    hint: "Meaning",
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
@@ -63,7 +63,7 @@ class WordCrudPage extends GetView<WordCrudController> {
                   child: VoclyInput(
                     controller: controller.exampleController,
                     icon: Icons.segment_outlined,
-                    hint: 'Example',
+                    hint: "Example",
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 15)),
@@ -73,7 +73,7 @@ class WordCrudPage extends GetView<WordCrudController> {
                 const SliverToBoxAdapter(child: SizedBox(height: 50)),
                 const SliverToBoxAdapter(
                   child: Text(
-                    'Word visual',
+                    "Word visual",
                     style: VoclyTypography.titleMedium,
                   ),
                 ),
@@ -96,7 +96,7 @@ class WordCrudPage extends GetView<WordCrudController> {
     return SliverToBoxAdapter(
       child: Obx(() {
         return PropertySelector<WordType>(
-          title: 'Type',
+          title: "Type",
           properties: WordType.values,
           selectedProperty: controller.type.value,
           onSelected: (type) {
@@ -117,7 +117,7 @@ class WordCrudPage extends GetView<WordCrudController> {
     return SliverToBoxAdapter(
       child: Obx(() {
         return PropertySelector<WordLevel>(
-          title: 'Level',
+          title: "Level",
           properties: WordLevel.values,
           selectedProperty: controller.level.value,
           onSelected: (level) {
@@ -140,7 +140,7 @@ class WordCrudPage extends GetView<WordCrudController> {
       child: Obx(() {
         final selectedIndex = controller.icon.value;
         return PropertySelector<IconData>(
-          title: 'Icon',
+          title: "Icon",
           properties: icons,
           selectedProperty: icons[selectedIndex],
           onSelected: (icon) {
@@ -160,7 +160,7 @@ class WordCrudPage extends GetView<WordCrudController> {
       child: Obx(() {
         final selectedIndex = controller.color.value;
         return PropertySelector<Color>(
-          title: 'Color',
+          title: "Color",
           properties: colors,
           selectedProperty: colors[selectedIndex],
           onSelected: (color) {
@@ -185,7 +185,7 @@ class WordCrudPage extends GetView<WordCrudController> {
           Expanded(
             child: _ActionButton(
               icon: Icons.done_outlined,
-              title: _isEditing ? 'Update word' : 'Add word',
+              title: _isEditing ? "Update word" : "Add word",
               borderColor: UiColor.positiveColor,
               onTap: _submit,
             ),
@@ -194,7 +194,7 @@ class WordCrudPage extends GetView<WordCrudController> {
           Expanded(
             child: _ActionButton(
               icon: Icons.cancel_outlined,
-              title: 'Cancel',
+              title: "Cancel",
               borderColor: UiColor.errorColor,
               onTap: controller.goBack,
             ),

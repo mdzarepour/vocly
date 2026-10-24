@@ -5,7 +5,7 @@ class SpeechService {
   SpeechService({required this.flutterTts});
 
   Future<void> initEssentials() async {
-    await flutterTts.setLanguage('En');
+    await flutterTts.setLanguage("En");
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.setPitch(1.0);
     await flutterTts.setVolume(1.0);

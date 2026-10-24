@@ -47,6 +47,7 @@ abstract class WordRepository {
 
   Future<void> deleteWords({required List<int> ids});
   Future<Uint8List> exportWords();
+  Future<void> importWords({required String data});
 }
 
 class Repository implements WordRepository, BookRepository {
@@ -160,6 +161,15 @@ class Repository implements WordRepository, BookRepository {
   Future<Uint8List> exportWords() async {
     try {
       return await wordProvider.exportWords();
+    } on IsarError catch (error) {
+      throw AppError(errorMessage: error.message, cause: error);
+    }
+  }
+
+  @override
+  Future<void> importWords({required String data}) async {
+    try {
+      await wordProvider.importWords(data: data);
     } on IsarError catch (error) {
       throw AppError(errorMessage: error.message, cause: error);
     }

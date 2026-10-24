@@ -6,7 +6,7 @@ class ExamPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(color: Colors.blue, child: const Text('exam')),
+      child: Container(color: Colors.blue, child: const Text("exam")),
     );
   }
 }

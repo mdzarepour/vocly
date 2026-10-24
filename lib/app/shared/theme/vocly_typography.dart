@@ -4,7 +4,7 @@ import 'package:vocly/app/shared/constant/vocly_color.dart';
 class VoclyTypography {
   VoclyTypography._();
 
-  static const String _fontFamily = 'Roboto';
+  static const String _fontFamily = "Roboto";
 
   // Display
   static const TextStyle displayLarge = TextStyle(

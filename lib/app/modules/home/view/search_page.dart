@@ -47,7 +47,7 @@ class _SearchAppBar extends GetView<WordSearchController>
         cursorColor: UiColor.thirdColor,
         style: VoclyTypography.titleMedium,
         decoration: const InputDecoration(
-          hintText: 'Search',
+          hintText: "Search",
           border: InputBorder.none,
         ),
         onChanged: (value) => controller.updateQuery(q: value),

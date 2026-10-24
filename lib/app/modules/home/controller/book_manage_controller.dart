@@ -48,9 +48,9 @@ class BookManageController extends GetxController {
 
   Future<void> deleteSelectedWords() async {
     final permission = await _dialogService.showDialog(
-      title: 'Deleting',
-      content: 'Are you sure about deleting books',
-      confirmTitle: 'Delete',
+      title: "Deleting",
+      content: "Are you sure about deleting books",
+      confirmTitle: "Delete",
     );
     if (!permission) {
       return;
@@ -70,7 +70,7 @@ class BookManageController extends GetxController {
   }
 
   void toBookDetailsPage({required int id}) {
-    Get.toNamed(Pages.bookDetailsPage, arguments: {'id': id});
+    Get.toNamed(Pages.bookDetailsPage, arguments: {"id": id});
   }
 
   void toBackWithSelectedWords() {

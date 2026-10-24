@@ -12,6 +12,7 @@ import 'package:vocly/app/shared/theme/vocly_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final directory = await getApplicationSupportDirectory();
+
   final isar = await Isar.open([
     WordSchema,
     BookSchema,
@@ -36,6 +37,9 @@ class Vocly extends StatelessWidget {
     );
   }
 }
+
+
+
 
 
   // final words = List.generate(1000, (index) {

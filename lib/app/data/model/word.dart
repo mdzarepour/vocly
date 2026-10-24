@@ -51,27 +51,27 @@ class Word {
 
   factory Word.fromMap({required Map<String, dynamic> map}) {
     return Word(
-      name: map['name'],
-      meaning: map['meaning'],
-      example: map['example'],
-      color: map['color'],
-      icon: map['icon'],
-      isLearned: map['isLearned'],
-      type: WordType.values[map['type']],
-      level: WordLevel.values[map['level']],
+      name: map["name"],
+      meaning: map["meaning"],
+      example: map["example"],
+      color: map["color"],
+      icon: map["icon"],
+      isLearned: map["isLearned"],
+      type: WordType.values[map["type"]],
+      level: WordLevel.values[map["level"]],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'meaning': meaning,
-      'example': example,
-      'color': color,
-      'icon': icon,
-      'isLearned': isLearned,
-      'type': type.index,
-      'level': level.index,
+      "name": name,
+      "meaning": meaning,
+      "example": example,
+      "color": color,
+      "icon": icon,
+      "isLearned": isLearned,
+      "type": type.index,
+      "level": level.index,
     };
   }
 

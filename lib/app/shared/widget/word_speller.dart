@@ -36,7 +36,7 @@ class WordSpeller extends StatelessWidget {
           onExpansionChanged: onExpansionChanged,
           childrenPadding: const EdgeInsets.only(bottom: 15),
           title: const Center(
-            child: Text('Practice', style: VoclyTypography.titleMedium),
+            child: Text("Practice", style: VoclyTypography.titleMedium),
           ),
           children: [
             Column(

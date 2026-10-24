@@ -21,7 +21,7 @@ class BookDetailsPage extends GetView<BookDetailsController> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: const Text('Review book', style: VoclyTypography.titleMedium),
+        title: const Text("Review book", style: VoclyTypography.titleMedium),
       ),
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
@@ -138,7 +138,7 @@ class _BookCardBack extends StatelessWidget {
                   style: VoclyTypography.titleMedium,
                 ),
                 Text(
-                  'Contains ${book.words.length} words',
+                  "Contains ${book.words.length} words",
                   textAlign: TextAlign.center,
                   style: VoclyTypography.titleMedium,
                 ),
@@ -165,7 +165,7 @@ class _EditButton extends GetView<BookDetailsController> {
       onTap: controller.toBookCrudPage,
       child: const VoclyCard(
         height: 50,
-        child: Center(child: Text('Edit', style: VoclyTypography.titleMedium)),
+        child: Center(child: Text("Edit", style: VoclyTypography.titleMedium)),
       ),
     );
   }

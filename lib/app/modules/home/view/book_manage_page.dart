@@ -77,7 +77,7 @@ class _AppBar extends GetView<BookManageController>
         return Row(
           children: [
             Text(
-              isSelectionMode ? '$selectedCount selected' : 'Manage word',
+              isSelectionMode ? "$selectedCount selected" : "Manage word",
               style: VoclyTypography.titleMedium,
             ),
             const Spacer(),

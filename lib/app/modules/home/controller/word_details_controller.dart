@@ -36,16 +36,16 @@ class WordDetailsController extends GetxController {
 
   Future<Either<String, String>?> deleteWord() async {
     final confirmed = await _dialogService.showDialog(
-      title: 'Delete word?',
-      content: 'Are you sure you want to delete "${_word.value!.name}"?',
-      confirmTitle: 'Delete',
+      title: "Delete word?",
+      content: "Are you sure you want to delete ${_word.value!.name}?",
+      confirmTitle: "Delete",
     );
     if (!confirmed) {
       return null;
     }
     try {
       await _wordRepository.deleteWords(ids: [_word.value!.id]);
-      return right('${_word.value!.name} deleted');
+      return right("${_word.value!.name} deleted");
     } on AppError catch (error) {
       return left(error.errorMessage);
     } catch (error) {
@@ -56,7 +56,7 @@ class WordDetailsController extends GetxController {
   void toWordCrudPage() {
     Get.toNamed(
       Pages.wordCrudPage,
-      arguments: {'id': id, 'type': CrudScreenType.edit},
+      arguments: {"id": id, "type": CrudScreenType.edit},
     );
   }
 

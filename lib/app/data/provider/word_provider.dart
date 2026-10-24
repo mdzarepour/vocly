@@ -129,4 +129,12 @@ class WordProvider {
     final bytes = Uint8List.fromList(utf8.encode(jsonString));
     return bytes;
   }
+
+  Future<void> importWords({required String data}) async {
+    final List<dynamic> jsonList = jsonDecode(data);
+    final List<Word> words = jsonList.map((e) => Word.fromMap(map: e)).toList();
+    isar.writeTxn(() async {
+      await isar.words.putAll(words);
+    });
+  }
 }

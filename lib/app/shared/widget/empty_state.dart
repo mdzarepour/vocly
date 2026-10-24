@@ -12,7 +12,7 @@ class EmptyState extends StatelessWidget {
         children: [
           Icon(Icons.search_off_outlined, size: 30),
           SizedBox(width: 5),
-          Text('Empty', style: VoclyTypography.titleMedium),
+          Text("Empty", style: VoclyTypography.titleMedium),
         ],
       ),
     );

@@ -58,14 +58,14 @@ class BookCrudController extends GetxController {
       final isExist = await _bookRepository.isBookExist(name: newBook.name);
       if (isExist) {
         final permission = await _dialogService.showDialog(
-          title: 'You already have this book!',
-          content: 'Do you want to add it twice?',
-          confirmTitle: 'Confirm',
+          title: "You already have this book!",
+          content: "Do you want to add it twice?",
+          confirmTitle: "Confirm",
         );
-        if (!permission) return left('Permission denied');
+        if (!permission) return left("Permission denied");
       }
       await _bookRepository.addBook(book: newBook, ids: _wordsIds.toList());
-      return right('${newBook.name.capitalizeFirst} added');
+      return right("${newBook.name.capitalizeFirst} added");
     } on AppError catch (e) {
       return left(e.errorMessage);
     }
@@ -74,33 +74,33 @@ class BookCrudController extends GetxController {
   Future<Either<String, String>> updateWord() async {
     await ready;
     final book = _editingBook;
-    if (book == null) return left('Book could not be loaded');
+    if (book == null) return left("Book could not be loaded");
 
     try {
       final map = _createMap();
       book.updateBook(
-        newColor: map['color'],
-        newDescription: map['description'],
-        newIcon: map['icon'],
-        newLevel: map['level'],
-        newName: map['name'],
-        newType: map['type'],
+        newColor: map["color"],
+        newDescription: map["description"],
+        newIcon: map["icon"],
+        newLevel: map["level"],
+        newName: map["name"],
+        newType: map["type"],
       );
       await _bookRepository.updateBook(book: book, ids: _wordsIds.toList());
-      return right('${book.name} updated');
+      return right("${book.name} updated");
     } on AppError catch (e) {
       return left(e.errorMessage);
     }
   }
 
   Map<String, dynamic> _createMap() => {
-    'name': nameController.text,
-    'description': descriptionController.text,
-    'type': type.value,
-    'level': level.value,
-    'icon': icon.value,
-    'color': color.value,
-    'isLearned': false,
+    "name": nameController.text,
+    "description": descriptionController.text,
+    "type": type.value,
+    "level": level.value,
+    "icon": icon.value,
+    "color": color.value,
+    "isLearned": false,
   };
 
   void goBack() => Get.back();
@@ -110,8 +110,8 @@ class BookCrudController extends GetxController {
     final selectedIds = await Get.toNamed(
       Pages.wordManagePage,
       arguments: {
-        'type': WordManagerScreenType.selectWords,
-        'selectedIds': _wordsIds.toList(),
+        "type": WordManagerScreenType.selectWords,
+        "selectedIds": _wordsIds.toList(),
       },
     );
     if (selectedIds != null) {

@@ -22,7 +22,7 @@ class VoclyInput extends StatelessWidget {
       style: VoclyTypography.titleMedium,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please insert $hint';
+          return "Please insert $hint";
         }
         return null;
       },

@@ -50,7 +50,7 @@ class _SelectWordsButton extends GetView<WordManageController> {
                   ),
                 ),
                 child: const Center(
-                  child: Text(style: VoclyTypography.titleMedium, 'Add words'),
+                  child: Text(style: VoclyTypography.titleMedium, "Add words"),
                 ),
               ),
             ),
@@ -109,7 +109,7 @@ class _AppBar extends GetView<WordManageController>
         return Row(
           children: [
             Text(
-              isSelectionMode ? '$selectedCount selected' : 'Manage word',
+              isSelectionMode ? "$selectedCount selected" : "Manage word",
               style: VoclyTypography.titleMedium,
             ),
             const Spacer(),
@@ -179,14 +179,14 @@ class _FilterView extends GetView<WordManageController> {
         children: [
           FilterButton(
             icon: Icons.sort,
-            title: 'Sort',
+            title: "Sort",
             isSelectd: true,
             onTap: showSort,
           ),
           Obx(
             () => FilterButton(
               icon: Icons.invert_colors_on_outlined,
-              title: 'Color',
+              title: "Color",
               isSelectd: controller.filterState.colors.isNotEmpty,
               onTap: _showColorFilter,
             ),
@@ -194,7 +194,7 @@ class _FilterView extends GetView<WordManageController> {
           Obx(
             () => FilterButton(
               icon: Icons.workspaces_outlined,
-              title: 'Icon',
+              title: "Icon",
               isSelectd: controller.filterState.icons.isNotEmpty,
               onTap: _showIconFilter,
             ),
@@ -202,7 +202,7 @@ class _FilterView extends GetView<WordManageController> {
           Obx(
             () => FilterButton(
               icon: Icons.back_hand_outlined,
-              title: 'Level',
+              title: "Level",
               isSelectd: controller.filterState.levels.isNotEmpty,
               onTap: _showLevelFilter,
             ),
@@ -210,7 +210,7 @@ class _FilterView extends GetView<WordManageController> {
           Obx(
             () => FilterButton(
               icon: Icons.assistant_photo_outlined,
-              title: 'Type',
+              title: "Type",
               isSelectd: controller.filterState.types.isNotEmpty,
               onTap: _showTypeFilter,
             ),

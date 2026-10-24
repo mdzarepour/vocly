@@ -19,7 +19,7 @@ class WordDetailsScreen extends GetView<WordDetailsController> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: const Text('Review word', style: VoclyTypography.titleMedium),
+        title: const Text("Review word", style: VoclyTypography.titleMedium),
       ),
       body: const SafeArea(child: _WordDetailsBody()),
     );
@@ -189,7 +189,7 @@ class _ListenButton extends GetView<WordDetailsController> {
           spacing: 15,
           children: [
             Icon(Icons.mic_none_rounded),
-            Text('Listen', style: VoclyTypography.titleMedium),
+            Text("Listen", style: VoclyTypography.titleMedium),
           ],
         ),
       ),
@@ -230,7 +230,7 @@ class _EditButton extends GetView<WordDetailsController> {
       onTap: controller.toWordCrudPage,
       child: const VoclyCard(
         height: 50,
-        child: Center(child: Text('Edit', style: VoclyTypography.titleMedium)),
+        child: Center(child: Text("Edit", style: VoclyTypography.titleMedium)),
       ),
     );
   }
@@ -247,7 +247,7 @@ class _DeleteButton extends GetView<WordDetailsController> {
         borderColor: UiColor.errorColor,
         height: 50,
         child: Center(
-          child: Text('Delete word', style: VoclyTypography.titleMedium),
+          child: Text("Delete word", style: VoclyTypography.titleMedium),
         ),
       ),
     );
@@ -258,12 +258,12 @@ class _DeleteButton extends GetView<WordDetailsController> {
     if (either == null) return;
     either.fold(
       (errorMessage) {
-        Get.showSnackbar(VoclySnackbar(title: 'Oops!', message: errorMessage));
+        Get.showSnackbar(VoclySnackbar(title: "Oops!", message: errorMessage));
       },
       (successMessage) {
         controller.toBack();
         Get.showSnackbar(
-          VoclySnackbar(title: 'Success', message: successMessage),
+          VoclySnackbar(title: "Success", message: successMessage),
         );
       },
     );

@@ -48,13 +48,13 @@ class Book {
 
   factory Book.create({required Map<String, dynamic> map}) {
     return Book(
-      name: map['name'],
-      description: map['description'],
-      color: map['color'],
-      icon: map['icon'],
-      isLearned: map['isLearned'],
-      type: map['type'],
-      level: map['level'],
+      name: map["name"],
+      description: map["description"],
+      color: map["color"],
+      icon: map["icon"],
+      isLearned: map["isLearned"],
+      type: map["type"],
+      level: map["level"],
     );
   }
 
