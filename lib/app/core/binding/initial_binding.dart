@@ -14,8 +14,8 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     final repository = Repository(
-      wordProvider: Get.find<WordProvider>(),
-      bookProvider: Get.find<BookProvider>(),
+      Get.find<BookProvider>(),
+      Get.find<WordProvider>(),
     );
     Get.put<WordRepository>(repository, permanent: true);
     Get.put<BookRepository>(repository, permanent: true);
@@ -31,6 +31,7 @@ class InitialBinding extends Bindings {
         Get.find<LuncherService>(),
         Get.find<PlatformService>(),
         Get.find<WordRepository>(),
+        Get.find<BookRepository>(),
       ),
     );
   }

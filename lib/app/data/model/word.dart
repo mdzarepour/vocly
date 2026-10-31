@@ -14,10 +14,12 @@ class Word {
   late String name;
 
   late String meaning;
+
   @Index(type: IndexType.value, caseSensitive: false)
   List<String> get meaningWords => Isar.splitWords(meaning);
 
   late String example;
+
   @Index(type: IndexType.value, caseSensitive: false)
   List<String> get exampleWords => Isar.splitWords(example);
 
@@ -51,14 +53,18 @@ class Word {
 
   factory Word.fromMap({required Map<String, dynamic> map}) {
     return Word(
-      name: map["name"],
-      meaning: map["meaning"],
-      example: map["example"],
-      color: map["color"],
-      icon: map["icon"],
-      isLearned: map["isLearned"],
-      type: WordType.values[map["type"]],
-      level: WordLevel.values[map["level"]],
+      name: map["name"] as String,
+      meaning: map["meaning"] as String,
+      example: map["example"] as String,
+      color: map["color"] as int,
+      icon: map["icon"] as int,
+      isLearned: map["isLearned"] as bool,
+      type: map["type"] is int
+          ? WordType.values[map["type"] as int]
+          : map["type"] as WordType,
+      level: map["level"] is int
+          ? WordLevel.values[map["level"] as int]
+          : map["level"] as WordLevel,
     );
   }
 

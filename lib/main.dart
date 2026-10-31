@@ -37,23 +37,3 @@ class Vocly extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-  // final words = List.generate(1000, (index) {
-  //   return Word(
-  //     name: 'name$index',
-  //     meaning: 'meaning',
-  //     example: 'example',
-  //     color: 1,
-  //     icon: 1,
-  //     isLearned: false,
-  //     type: WordType.article,
-  //     level: WordLevel.easy,
-  //   );
-  // });
-  // isar.writeTxn(() async {
-  //   await isar.words.putAll(words);
-  // });

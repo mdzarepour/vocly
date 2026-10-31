@@ -49,6 +49,13 @@ class BookProvider {
     return isar.books.watchLazy(fireImmediately: true);
   }
 
+  Stream<int> watchBooksCount() {
+    return isar.words
+        .where()
+        .watch(fireImmediately: true)
+        .map((list) => list.length);
+  }
+
   Future<List<Book>> getPagedBooks({
     required int limit,
     required int offset,

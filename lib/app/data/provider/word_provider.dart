@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:isolate';
 import 'package:isar_community/isar.dart';
 import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/data/model/filter.dart';
@@ -48,6 +49,13 @@ class WordProvider {
 
   Stream<void> watchWords() {
     return isar.words.watchLazy(fireImmediately: true);
+  }
+
+  Stream<int> watchWordsCount() {
+    return isar.words
+        .where()
+        .watch(fireImmediately: true)
+        .map((list) => list.length);
   }
 
   Future<List<Word>> searchWords({
@@ -122,18 +130,20 @@ class WordProvider {
   }
 
   Future<Uint8List> exportWords() async {
-    final List<Word> words = await isar.words.where().findAll();
-    final String jsonString = jsonEncode(
-      words.map((word) => word.toMap()).toList(),
-    );
-    final bytes = Uint8List.fromList(utf8.encode(jsonString));
-    return bytes;
+    print("freez in step one =>");
+    final words = await isar.words.where().findAll();
+    print("freez in step two =>");
+    final jsonString = jsonEncode(words.map((word) => word.toMap()).toList());
+    print("freez in step three =>");
+    return Uint8List.fromList(utf8.encode(jsonString));
   }
 
   Future<void> importWords({required String data}) async {
     final List<dynamic> jsonList = jsonDecode(data);
-    final List<Word> words = jsonList.map((e) => Word.fromMap(map: e)).toList();
-    isar.writeTxn(() async {
+    final List<Word> words = jsonList.map((e) {
+      return Word.fromMap(map: Map<String, dynamic>.from(e as Map));
+    }).toList();
+    await isar.writeTxn(() async {
       await isar.words.putAll(words);
     });
   }

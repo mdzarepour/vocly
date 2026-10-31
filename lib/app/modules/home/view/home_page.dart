@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vocly/app/core/enum/enums.dart';
 import 'package:vocly/app/modules/home/controller/home_controller.dart';
 import 'package:vocly/app/shared/constant/vocly_color.dart';
 import 'package:vocly/app/shared/theme/vocly_typography.dart';
@@ -21,22 +22,26 @@ class HomePage extends GetView<HomeController> {
         Row(
           spacing: 10,
           children: [
-            Expanded(
-              child: _HomeButton(
-                title: "Books",
-                data: "1 book",
-                icon: Icons.menu_book_outlined,
-                onTap: controller.toBookManagePage,
-              ),
-            ),
-            Expanded(
-              child: _HomeButton(
-                title: "Words",
-                data: "5 words",
-                icon: Icons.language_outlined,
-                onTap: controller.toWordManagePage,
-              ),
-            ),
+            Obx(() {
+              return Expanded(
+                child: _HomeButton(
+                  title: "Books",
+                  data: controller.booksCount.toString(),
+                  icon: const Icon(Icons.menu_book_outlined),
+                  onTap: controller.toBookManagePage,
+                ),
+              );
+            }),
+            Obx(() {
+              return Expanded(
+                child: _HomeButton(
+                  title: "Words",
+                  data: controller.wordsCount.toString(),
+                  icon: const Icon(Icons.language_outlined),
+                  onTap: controller.toWordManagePage,
+                ),
+              );
+            }),
           ],
         ),
         const SizedBox(height: 10),
@@ -46,14 +51,14 @@ class HomePage extends GetView<HomeController> {
             Expanded(
               child: _HomeButton(
                 title: "Add book",
-                icon: Icons.add,
+                icon: const Icon(Icons.add),
                 onTap: controller.toBookCrudPage,
               ),
             ),
             Expanded(
               child: _HomeButton(
                 title: "Add word",
-                icon: Icons.add,
+                icon: const Icon(Icons.add),
                 onTap: controller.toWordCrudPage,
               ),
             ),
@@ -68,7 +73,7 @@ class HomePage extends GetView<HomeController> {
         _HomeButton(
           title: "Use prepared books",
           data: "Import popular vocabulary books",
-          icon: Icons.coffee_outlined,
+          icon: const Icon(Icons.coffee_outlined),
           onTap: controller.goToPreparedBooksWebPage,
         ),
         const SizedBox(height: 25),
@@ -77,7 +82,16 @@ class HomePage extends GetView<HomeController> {
         _HomeButton(
           title: "Export your vocabulary",
           data: "Backup your words as a pdf file",
-          icon: Icons.folder_outlined,
+          icon: Obx(() {
+            final isLoadin = controller.loading == BackupLoading.exportLoading;
+            return isLoadin
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(),
+                  )
+                : const Icon(Icons.folder_outlined);
+          }),
           onTap: () async {
             final either = await controller.exportWords();
             either.fold(
@@ -94,7 +108,16 @@ class HomePage extends GetView<HomeController> {
         _HomeButton(
           title: "Import your vocabulary",
           data: "Import you backup vocabulary",
-          icon: Icons.import_export_outlined,
+          icon: Obx(() {
+            final isLoadin = controller.loading == BackupLoading.importLoading;
+            return isLoadin
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(),
+                  )
+                : const Icon(Icons.import_export_outlined);
+          }),
           onTap: () async {
             final either = await controller.importWords();
             either.fold(
@@ -151,7 +174,7 @@ class HomePage extends GetView<HomeController> {
 class _HomeButton extends StatelessWidget {
   final String title;
   final String? data;
-  final IconData icon;
+  final Widget icon;
   final void Function()? onTap;
 
   const _HomeButton({
@@ -171,9 +194,9 @@ class _HomeButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           spacing: 15,
           children: data == null
-              ? [Icon(icon), Text(title, style: VoclyTypography.titleMedium)]
+              ? [icon, Text(title, style: VoclyTypography.titleMedium)]
               : [
-                  Icon(icon),
+                  icon,
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -25,6 +25,7 @@ class WordCrudController extends GetxController {
   late final TextEditingController exampleController;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   Word? _editingWord;
 
   Rx<WordType> type = Rx(WordType.noun);
@@ -32,15 +33,13 @@ class WordCrudController extends GetxController {
   RxInt icon = 0.obs;
   RxInt color = 0.obs;
 
-  void _initController() async {
+  Future<void> _initController() async {
     if (screenType == CrudScreenType.add) return;
     _editingWord = await _wordRepository.getWord(id: _id!);
-
     if (_editingWord != null) {
       nameController.text = _editingWord!.name;
       meaningController.text = _editingWord!.meaning;
       exampleController.text = _editingWord!.example;
-
       type.value = _editingWord!.type;
       level.value = _editingWord!.level;
       icon.value = _editingWord!.icon;
@@ -50,7 +49,7 @@ class WordCrudController extends GetxController {
 
   Future<Either<String, String>> addWord() async {
     try {
-      final newWord = Word.fromMap(map: _ctreateMap());
+      final newWord = Word.fromMap(map: _createMap());
       final isExist = await _wordRepository.isWordExist(name: newWord.name);
       if (isExist) {
         final permission = await _dialogService.showDialog(
@@ -71,15 +70,15 @@ class WordCrudController extends GetxController {
 
   Future<Either<String, String>> updateWord() async {
     try {
-      final map = _ctreateMap();
+      final map = _createMap();
       _editingWord!.updateWord(
-        newColor: map["color"],
-        newExample: map["example"],
-        newIcon: map["icon"],
-        newLevel: map["level"],
-        newMeaning: map["meaning"],
-        newName: map["name"],
-        newType: map["type"],
+        newColor: map["color"] as int,
+        newExample: map["example"] as String,
+        newIcon: map["icon"] as int,
+        newLevel: map["level"] as WordLevel,
+        newMeaning: map["meaning"] as String,
+        newName: map["name"] as String,
+        newType: map["type"] as WordType,
       );
       await _wordRepository.updateWord(word: _editingWord!);
       return right("${_editingWord!.name} updated");
@@ -88,7 +87,7 @@ class WordCrudController extends GetxController {
     }
   }
 
-  Map<String, dynamic> _ctreateMap() {
+  Map<String, dynamic> _createMap() {
     return {
       "name": nameController.text,
       "meaning": meaningController.text,
@@ -108,17 +107,17 @@ class WordCrudController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _initController();
     nameController = TextEditingController();
     meaningController = TextEditingController();
     exampleController = TextEditingController();
+    _initController();
   }
 
   @override
   void onClose() {
-    super.onClose();
     nameController.dispose();
     meaningController.dispose();
     exampleController.dispose();
+    super.onClose();
   }
 }
